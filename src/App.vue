@@ -10,6 +10,8 @@
   }
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+  * {
+    font-family: 'Montserrat', sans-serif;
+  }
 </style>
