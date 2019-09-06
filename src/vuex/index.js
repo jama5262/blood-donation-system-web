@@ -11,11 +11,15 @@ export default new Vuex.Store({
       message: "",
       type: "success",
       showAlert: false
-    }
+    },
+    showDialogMap: false
   },
   mutations: {
     buttonLoading(state, isLoading) {
       state.buttonLoading = isLoading
+    },
+    showDialogMap(state, showDialog) {
+      state.showDialogMap = showDialog
     },
     setAlertMessage(state, payload) {
       state.alert.showAlert = payload.showAlert || false

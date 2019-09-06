@@ -4,6 +4,7 @@ import router from './routes'
 import store from './vuex'
 import vuetify from './plugins/vuetify'
 import firebase from "firebase"
+import 'leaflet/dist/leaflet.css';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDYu49q4dCwqqiXtX-T6ebGVSq9PwH3M18",

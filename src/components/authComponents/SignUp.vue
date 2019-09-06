@@ -2,18 +2,15 @@
   <div class="main-container">
     <p class="display-3 font-weight-bold primary--text">Sign Up</p>
     <v-card max-width="344" class="mx-auto">
-      <v-btn color="primary" rounded>
+      <v-btn style="margin-bottom: 10px" color="primary" rounded>
         Upload Image
         <v-icon right dark>mdi-cloud-upload</v-icon>
       </v-btn>
+      <DialogMap/>
       <v-text-field label="Hospital Name"></v-text-field>
       <v-text-field type="email" label="Email"></v-text-field>
       <v-text-field type="password" label="Password"></v-text-field>
       <v-text-field label="Phone"></v-text-field>
-      <v-btn color="primary" rounded>
-        Choose Location
-        <v-icon right dark>mdi-map-marker</v-icon>
-      </v-btn>
     </v-card>
     <div class="button-container d-flex justify-space-between">
       <v-btn v-on:click="goBack" rounded color="primary">Back</v-btn>
@@ -24,11 +21,16 @@
 </template>
 
 <script>
+import DialogMap from "../alertComponents/DialogMap"
+
 export default {
   methods: {
-    goBack: function () {
+    goBack: function() {
       window.history.back();
     }
+  },
+  components: {
+    DialogMap
   }
 };
 </script>
@@ -44,5 +46,8 @@ export default {
 }
 .main-container {
   width: 300px;
+}
+#mapid {
+  height: 180px;
 }
 </style>
