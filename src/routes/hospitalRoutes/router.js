@@ -1,8 +1,8 @@
-import Signup from "../../components/authComponents/SignUp"
+import Home from "../../views/hospitalViews/Home"
 
 export default [
   {
-    path: "/jama",
-    component: Signup
+    path: "/hospital",
+    component: Home
   }
 ]

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import HospitalRoutes from "./hospitalRoutes/router"
+import AdminRoutes from "./adminRoutes/router"
 
 import Auth from "../views/Auth"
 import Login from "../components/authComponents/Login"
@@ -28,5 +29,6 @@ export default new Router({
       ]
     },
     ...HospitalRoutes,
+    ...AdminRoutes
   ]
 })

@@ -5,9 +5,7 @@
         Choose Location
         <v-icon right dark>mdi-map-marker</v-icon>
       </v-btn>
-      <v-alert dense text :type="locationAlertType">
-        {{ chosenLocation.label }}
-      </v-alert>
+      <v-alert dense text :type="locationAlertType">{{ chosenLocation.label }}</v-alert>
     </template>
     <v-card>
       <l-map :zoom="leafletMap.zoom" :center="leafletMap.center">
@@ -52,20 +50,19 @@ export default {
       searchItems: [],
       locationAlertType: "warning",
       chosenLocation: {
-        label: "No location chosen",
-        lat: null,
-        lng: null
+        label: "No location chosen"
       }
     };
   },
   methods: {
     getLocation(location) {
-      this.currentLatLng = new L.LatLng(location.y, location.x)
-      this.chosenLocation = { ...location }
-      this.locationAlertType = "success"
+      this.currentLatLng = new L.LatLng(location.y, location.x);
+      this.chosenLocation = { ...location };
+      this.locationAlertType = "success";
       setTimeout(() => {
-        this.$store.commit("showDialogMap", false)
-      }, 2000)
+        this.$store.commit("showDialogMap", false);
+        this.$store.commit("setLocationDetails", this.chosenLocation);
+      }, 2000);
     }
   },
   mounted() {
