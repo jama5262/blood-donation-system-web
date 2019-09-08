@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import firebase from "firebase"
+import { auth, database, storage } from "firebase/app"
 
 import HospitalModule from "./modules/hospitalModule"
 
@@ -58,7 +58,7 @@ export default new Vuex.Store({
           showAlert: false,
           message: "",
         })
-        await firebase.auth().signInWithEmailAndPassword(email, password)
+        await auth().signInWithEmailAndPassword(email, password)
         commit("buttonLoading", false)
       } catch (e) {
         console.log(e);
@@ -87,12 +87,12 @@ export default new Vuex.Store({
         else if (getters.getLocationDetails.place === "") {
           throw "Please set the location of the hospital"
         }
-        await firebase.auth().createUserWithEmailAndPassword(email, password)
-        const uid = firebase.auth().currentUser.uid
+        await auth().createUserWithEmailAndPassword(email, password)
+        const uid = auth().currentUser.uid
         const imageExtension = image.name.slice(image.name.lastIndexOf("."))
-        const snapshot = await firebase.storage().ref("Hospital/" + uid + "/profileImage/" + "image." + imageExtension).put(image)
+        const snapshot = await storage().ref("Hospital/" + uid + "/profileImage/" + "image." + imageExtension).put(image)
         const imageUrl = await snapshot.ref.getDownloadURL()
-        await firebase.database().ref(`users/${uid}`).set(
+        await database().ref(`users/${uid}`).set(
           {
             ...getters.getLocationDetails,
             email,

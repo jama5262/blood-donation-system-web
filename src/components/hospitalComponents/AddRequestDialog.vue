@@ -10,20 +10,42 @@
       <v-form v-model="valid">
         <v-text-field
           outlined
+          :rules="rules.recepient"
           v-model="recepientName"
-          :rules="rules.recepientName"
           label="Recepient's name"
           required
         ></v-text-field>
-        <v-select v-model="bloodType" :items="bloodTypeList" label="Blood type" outlined></v-select>
-        <v-select v-model="gender" :items="genderList" label="Gender" outlined></v-select>
-        <v-textarea auto-grow rows="2" outlined label="Reason for request" v-model="requestReason"></v-textarea>
+        <v-select
+          :rules="rules.bloodType"
+          v-model="bloodType"
+          :items="bloodTypeList"
+          label="Blood type"
+          required
+          outlined
+        ></v-select>
+        <v-select
+          :rules="rules.gender"
+          v-model="gender"
+          :items="genderList"
+          label="Gender"
+          required
+          outlined
+        ></v-select>
+        <v-textarea
+          :rules="rules.reason"
+          auto-grow
+          rows="2"
+          outlined
+          label="Reason for request"
+          v-model="requestReason"
+          required
+        ></v-textarea>
       </v-form>
 
       <v-card-actions>
         <div class="flex-grow-1"></div>
         <v-btn color="primary" text @click="closeDialog">Cancel</v-btn>
-        <v-btn color="primary" text>Add</v-btn>
+        <v-btn @click="addRequest" color="primary" text>Add</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -36,28 +58,28 @@ export default {
       valid: false,
       recepientName: "",
       requestReason: "",
-      bloodType: "Choose blood type",
-      gender: "Choose gender",
-      bloodTypeList: [
-        "Choose blood type",
-        "O+",
-        "O-",
-        "A+",
-        "A-",
-        "B+",
-        "B-",
-        "AB+",
-        "AB-"
-      ],
-      genderList: ["Choose gender", "Male", "Female"],
+      bloodType: "",
+      gender: "",
+      bloodTypeList: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
+      genderList: ["Male", "Female"],
       rules: {
-        recepient: [value => !!v || "Please enter recepient's name"]
+        recepient: [v => !!v || "Please enter recepient's name"],
+        bloodType: [v => !!v || "Please choose a blood type"],
+        gender: [v => !!v || "Please choose a gender"],
+        reason: [v => !!v || "Please enter reason for request"]
       }
     };
   },
   methods: {
     addRequest() {
-      
+      if (this.valid) {
+        this.$store.dispatch("hospitalModule/addRequest", {
+          recepientName: this.recepientName,
+          bloodType: this.bloodType,
+          gender: this.gender,
+          requestReason: this.requestReason
+        });
+      }
     },
     closeDialog() {
       this.$store.commit("hospitalModule/showAddRequestDialog", false);

@@ -1,4 +1,6 @@
-export default  {
+import { database } from "firebase";
+
+export default {
   namespaced: true,
   state: {
     addButton: {
@@ -27,6 +29,28 @@ export default  {
       state.dialogs.addRequestDailog.showDialog = showDialog
     },
   },
-  getters: {},
-  actions: {}
+  getters: {
+    getRequestDetails(state, getter, rootState) {
+      return rootState.userDetails
+    }
+  },
+  actions: {
+    async addRequest({ getters }, payload) {
+      const { hname, imageUrl, lat, lng, place, uid } = getters.getRequestDetails;
+      const { recepientName, bloodType, gender, requestReason } = payload
+      const requestRef = await database().ref("requests").push({
+        hname,
+        imageUrl,
+        uid,
+        lat,
+        lng,
+        requestReason,
+        recepientName,
+        gender,
+        bloodType,
+        place
+      })
+      console.log(requestRef.key);
+    }
+  }
 }
