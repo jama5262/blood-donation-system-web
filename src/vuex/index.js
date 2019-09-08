@@ -59,7 +59,6 @@ export default new Vuex.Store({
           message: "",
         })
         await auth().signInWithEmailAndPassword(email, password)
-        commit("buttonLoading", false)
       } catch (e) {
         console.log(e);
         commit("setAlertMessage", {
@@ -67,7 +66,16 @@ export default new Vuex.Store({
           message: e.message,
           type: "error"
         })
+      } finally {
         commit("buttonLoading", false)
+      }
+    },
+    async firebaseSignOut({ commit }) {
+      try {
+        await auth().signOut()
+        commit("setUserDetails", {})
+      } catch (e) {
+        console.log("Error signing out ");
       }
     },
     async firebaseSignUp({ commit, getters }, payload) {
@@ -102,7 +110,6 @@ export default new Vuex.Store({
             imageUrl
           }
         )
-        commit("buttonLoading", false)
         return
       } catch (e) {
         console.log(e);
@@ -111,8 +118,9 @@ export default new Vuex.Store({
           message: e.message || e,
           type: "error"
         })
-        commit("buttonLoading", false)
         return Promise.reject()
+      } finally {
+        commit("buttonLoading", false)
       }
     },
   }

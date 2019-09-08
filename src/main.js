@@ -13,8 +13,8 @@ new Vue({
   store,
   vuetify,
   render: h => h(App),
-  mounted() {
-    const firebaseConfig = {
+  created() {
+    initializeApp({
       apiKey: "AIzaSyDYu49q4dCwqqiXtX-T6ebGVSq9PwH3M18",
       authDomain: "elite-span-131415.firebaseapp.com",
       databaseURL: "https://elite-span-131415.firebaseio.com",
@@ -22,9 +22,7 @@ new Vue({
       storageBucket: "elite-span-131415.appspot.com",
       messagingSenderId: "1064937901507",
       appId: "1:1064937901507:web:56aeb80122c8bbd1"
-    }
-
-    initializeApp(firebaseConfig);
+    });
 
     auth().onAuthStateChanged(async (user) => {
       try {
@@ -46,6 +44,7 @@ new Vue({
           }
         } else {
           console.log("user does not exist");
+          await router.replace("/")
         }
       } catch (e) {
         console.log(e);

@@ -18,8 +18,8 @@
       </template>
 
       <v-list>
-        <v-list-item v-for="n in 5" :key="n" @click="() => {}">
-          <v-list-item-title>Option {{ n }}</v-list-item-title>
+        <v-list-item v-for="n in menuItems" :key="n.type" @click="menuMethod(n.type)">
+          <v-list-item-title>{{ n.name }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -28,7 +28,22 @@
 
 <script>
 export default {
+  data() {
+    return {
+      menuItems: [
+        {
+          type: 1,
+          name: "Sign Out"
+        }
+      ]
+    }
+  },
   methods: {
+    menuMethod(value) {
+      if (value === 1) {
+        this.$store.dispatch("firebaseSignOut")
+      }
+    },
     showDialogs() {
       if (this.addButton.type === 1) {
         this.$store.commit("hospitalModule/showAddRequestDialog", true)

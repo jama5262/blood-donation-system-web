@@ -45,7 +45,7 @@
       <v-card-actions>
         <div class="flex-grow-1"></div>
         <v-btn color="primary" text @click="closeDialog">Cancel</v-btn>
-        <v-btn @click="addRequest" color="primary" text>Add</v-btn>
+        <v-btn :loading="buttonLoading" @click="addRequest" color="primary" text>Add</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -86,6 +86,9 @@ export default {
     }
   },
   computed: {
+    buttonLoading() {
+      return this.$store.state.buttonLoading;
+    },
     showDialog: {
       get() {
         return this.$store.state.hospitalModule.dialogs.addRequestDailog

@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "git": "git checkout develop && git pull"
   },
   "dependencies": {
     "core-js": "^2.6.5",
     "firebase": "^6.5.0",
+    "geofire": "^5.0.1",
     "leaflet": "^1.5.1",
     "leaflet-geosearch": "^2.7.0",
     "vue": "^2.6.10",
