@@ -12,8 +12,4 @@ export default {};
 * {
   font-family: "Montserrat", sans-serif;
 }
-html,
-body {
-  height: 100%;
-}
 </style>

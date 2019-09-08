@@ -25,15 +25,15 @@ firebase.auth().onAuthStateChanged(async (user) => {
   try {
     store.commit("buttonLoading", true)
     if (user) {
-      const { email, emailVerified, photoURL, uid } = user
+      const { email, emailVerified, uid } = user
       console.log("user exists");
+      const snapshot = await firebase.database().ref(`users/${uid}`).once("value")
       store.commit("setUserDetails", {
         email,
         emailVerified,
-        photoURL,
-        uid
+        uid,
+        ...snapshot.val()
       })
-      const snapshot = await firebase.database().ref(`users/${uid}`).once("value")
       if (snapshot.val().role === 1) {
         await router.replace("/hospital")
       } else {
