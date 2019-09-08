@@ -5,15 +5,25 @@
     </template>
 
     <v-card>
-      <v-card-title class="headline grey lighten-2" primary-title>Privacy Policy</v-card-title>
+      <v-card-title class="font-weight-bold" primary-title>Add Request</v-card-title>
 
-      <v-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</v-card-text>
-
-      <v-divider></v-divider>
+      <v-form v-model="valid">
+        <v-text-field
+          outlined
+          v-model="recepientName"
+          :rules="rules.recepientName"
+          label="Recepient's name"
+          required
+        ></v-text-field>
+        <v-select v-model="bloodType" :items="bloodTypeList" label="Blood type" outlined></v-select>
+        <v-select v-model="gender" :items="genderList" label="Gender" outlined></v-select>
+        <v-textarea auto-grow rows="2" outlined label="Reason for request" v-model="requestReason"></v-textarea>
+      </v-form>
 
       <v-card-actions>
         <div class="flex-grow-1"></div>
-        <v-btn color="primary" text @click="dialog = false">I accept</v-btn>
+        <v-btn color="primary" text @click="closeDialog">Cancel</v-btn>
+        <v-btn color="primary" text>Add</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -21,13 +31,46 @@
 
 <script>
 export default {
+  data() {
+    return {
+      valid: false,
+      recepientName: "",
+      requestReason: "",
+      bloodType: "Choose blood type",
+      gender: "Choose gender",
+      bloodTypeList: [
+        "Choose blood type",
+        "O+",
+        "O-",
+        "A+",
+        "A-",
+        "B+",
+        "B-",
+        "AB+",
+        "AB-"
+      ],
+      genderList: ["Choose gender", "Male", "Female"],
+      rules: {
+        recepient: [value => !!v || "Please enter recepient's name"]
+      }
+    };
+  },
+  methods: {
+    addRequest() {
+      
+    },
+    closeDialog() {
+      this.$store.commit("hospitalModule/showAddRequestDialog", false);
+    }
+  },
   computed: {
     showDialog: {
       get() {
-        return this.$store.state.hospitalModule.dialogs.addRequestDailog.showDialog
+        return this.$store.state.hospitalModule.dialogs.addRequestDailog
+          .showDialog;
       },
       set(value) {
-        this.$store.commit("hospitalModule/showAddRequestDialog", value)
+        this.$store.commit("hospitalModule/showAddRequestDialog", value);
       }
     }
   }
@@ -35,4 +78,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-form {
+  padding: 10px 30px 0 30px;
+}
 </style>
