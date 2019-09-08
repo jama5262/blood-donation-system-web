@@ -1,15 +1,20 @@
 <template>
   <div>
-    This is hospital home
+    <v-content>
+      <Appbar />
+    </v-content>
   </div>
 </template>
 
 <script>
-  export default {
-    
+import Appbar from "../../components/hospitalComponents/Appbar";
+
+export default {
+  components: {
+    Appbar
   }
+};
 </script>
 
 <style lang="scss" scoped>
-
 </style>
