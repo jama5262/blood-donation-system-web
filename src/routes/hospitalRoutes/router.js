@@ -1,4 +1,4 @@
-import Home from "../../views/hospitalViews/Home"
+import Home from "../../views/hospitalViews/homeViews/Home"
 
 export default [
   {

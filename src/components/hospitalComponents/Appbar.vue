@@ -4,6 +4,10 @@
 
     <div class="flex-grow-1"></div>
 
+    <v-btn text>
+      {{ addButton.name }}
+    </v-btn>
+
     <v-btn icon>
       <v-icon>mdi-qrcode</v-icon>
     </v-btn>
@@ -29,6 +33,9 @@ export default {
   computed: {
     hospitalName() {
       return this.$store.state.userDetails.hname;
+    },
+    addButton() {
+      return this.$store.state.hospitalModule.addButton;
     }
   }
 };

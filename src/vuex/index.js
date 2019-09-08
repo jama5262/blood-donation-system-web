@@ -2,9 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from "firebase"
 
+import HospitalModule from "./modules/hospitalModule"
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  modules: {
+    hospitalModule: HospitalModule
+  },
   state: {
     userDetails: {},
     locationDetails: {},
