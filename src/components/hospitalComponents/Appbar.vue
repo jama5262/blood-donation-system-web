@@ -4,9 +4,7 @@
 
     <div class="flex-grow-1"></div>
 
-    <v-btn text>
-      {{ addButton.name }}
-    </v-btn>
+    <v-btn @click="showDialogs" text>{{ addButton.name }}</v-btn>
 
     <v-btn icon>
       <v-icon>mdi-qrcode</v-icon>
@@ -30,6 +28,15 @@
 
 <script>
 export default {
+  methods: {
+    showDialogs() {
+      if (this.addButton.type === 1) {
+        this.$store.commit("hospitalModule/showAddRequestDialog", true)
+      } else if (this.addButton.type === 2) {
+        this.$store.commit("hospitalModule/showAddRequestDialog", true)
+      }
+    }
+  },
   computed: {
     hospitalName() {
       return this.$store.state.userDetails.hname;
