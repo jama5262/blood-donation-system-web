@@ -1,7 +1,7 @@
 <template>
     <v-tabs grow>
-      <v-tab>Requests</v-tab>
-      <v-tab>Donors</v-tab>
+      <v-tab>Active Requests</v-tab>
+      <v-tab>Past Requests</v-tab>
 
       <v-tab-item>
         this is content
