@@ -4,14 +4,20 @@
       <v-tab>Past Requests</v-tab>
 
       <v-tab-item>
-        this is content
+        <RequestCard />
       </v-tab-item>
       <v-tab-item></v-tab-item>
     </v-tabs>
 </template>
 
 <script>
-export default {};
+import RequestCard from "../../../components/hospitalComponents/RequestCard"
+
+export default {
+  components: {
+    RequestCard
+  }
+};
 </script>
 
 <style lang="scss" scoped>

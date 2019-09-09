@@ -31,7 +31,7 @@ export default {
     },
   },
   getters: {
-    getRequestDetails(state, getter, rootState) {
+    getRequestDetails(_state, _getter, rootState) {
       return rootState.userDetails
     }
   },
@@ -62,6 +62,13 @@ export default {
       } finally {
         commit("buttonLoading", false, { root: true })
         commit("showAddRequestDialog", false)
+      }
+    },
+    async getRequests({ commit }) {
+      try {
+        
+      } catch (e) {
+        
       }
     }
   }
