@@ -51,7 +51,9 @@ export default {
           recepientName,
           gender,
           bloodType,
-          place
+          place,
+          accepted: 0,
+          viewed: 0
         })
         let geofire = new GeoFire(database().ref(`geofire/${bloodType}`))
         await geofire.set(requestRef.key, [parseFloat(lng), parseFloat(lat)])
