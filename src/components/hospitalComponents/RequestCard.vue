@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row v-for="n in data" justify="center" align="center">
+    <v-row v-for="n in data" :key="n.uid" justify="center" align="center">
       <v-col class="date-container" md="1">
         <span class="date font-weight-bold">20</span>
         <br />
@@ -13,15 +13,15 @@
           <v-row style="padding: 0 20px">
             <v-col md="auto">
               <v-avatar color="primary" size="64">
-                <span class="white--text">AB+</span>
+                <span class="white--text">{{ n.bloodType }}</span>
               </v-avatar>
             </v-col>
             <v-col>
-              <span class="name font-weight-bold">John Doe</span>
+              <span class="name font-weight-bold">{{ n.recepientName }}</span>
               <br />
-              <span class="gender font-weight-bold">Male</span>
+              <span class="gender font-weight-bold">{{ n.gender }}</span>
               <br />
-              <span class="gender font-weight-bold">South B, Nairobi City, Kenya</span>
+              <span class="gender font-weight-bold">{{ n.place }}</span>
             </v-col>
           </v-row>
           <v-row>
@@ -32,15 +32,15 @@
                     <span style="text-align: left" class="primary--text">VIEW MORE</span>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    <span class="primary--text date">0</span>
+                    <span class="primary--text date">{{ n.viewed }} </span>
                     <span>donors reached</span>
                     <br />
-                    <span class="primary--text date">7</span>
+                    <span class="primary--text date">{{ n.accepted }} </span>
                     <span>donors accepted the request</span>
                     <br />
                     <span class="gender">Reason</span>
                     <br />
-                    <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus beatae culpa odio aperiam, necessitatibus repellendus cupiditate aliquam sit, consectetur aliquid quaerat vel fugit reiciendis at temporibus, obcaecati et soluta esse!</span>
+                    <span>{{ n.requestReason }}</span>
                     <div class="d-flex justify-end pt-5">
                       <v-btn color="primary" text>Close Request</v-btn>
                     </div>
@@ -58,7 +58,7 @@
 <script>
 export default {
   props: ["data"],
-  data(){ 
+  data() {
     return {
       j: this.data
     };

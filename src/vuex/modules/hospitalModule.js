@@ -49,7 +49,9 @@ export default {
         commit("buttonLoading", true, { root: true })
         const { hname, imageUrl, lat, lng, place, uid } = getters.getRequestDetails;
         const { recepientName, bloodType, gender, requestReason } = payload
-        const requestRef = await database().ref("requests").push({
+        const requestRef = database().ref("requests")
+        const key = requestRef.push().key
+        await requestRef.child(key).set({
           hname,
           imageUrl,
           uid,
@@ -62,10 +64,11 @@ export default {
           place,
           accepted: 0,
           viewed: 0,
-          active: true
+          active: true,
+          key
         })
         let geofire = new GeoFire(database().ref(`geofire/${bloodType}`))
-        await geofire.set(requestRef.key, [parseFloat(lng), parseFloat(lat)])
+        await geofire.set(key, [parseFloat(lng), parseFloat(lat)])
       } catch (e) {
         console.log(`There was an error setting geofire location ${e}`);
       } finally {
