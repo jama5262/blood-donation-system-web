@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "firebase": "^6.5.0",
+    "firebase": "^6.6.0",
     "geofire": "^5.0.1",
     "leaflet": "^1.5.1",
     "leaflet-geosearch": "^2.7.0",
@@ -17,7 +17,8 @@
     "vue-router": "^3.0.3",
     "vue2-leaflet": "^2.2.1",
     "vuetify": "^2.0.0",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vuexfire": "^3.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",

@@ -1,9 +1,11 @@
-import { database } from "firebase";
+import { database, auth } from "firebase";
 import { GeoFire } from "geofire";
+import { firebaseAction } from 'vuexfire'
 
 export default {
   namespaced: true,
   state: {
+    requests: [],
     addButton: {
       type: 1,
       name: "Add Request"
@@ -33,6 +35,12 @@ export default {
   getters: {
     getRequestDetails(_state, _getter, rootState) {
       return rootState.userDetails
+    },
+    getActiveRequest(state) {
+      return state.requests.filter(request => request.active === true)
+    },
+    getPatRequest(state) {
+      return state.requests.filter(request => request.active === false)
     }
   },
   actions: {
@@ -53,7 +61,8 @@ export default {
           bloodType,
           place,
           accepted: 0,
-          viewed: 0
+          viewed: 0,
+          active: true
         })
         let geofire = new GeoFire(database().ref(`geofire/${bloodType}`))
         await geofire.set(requestRef.key, [parseFloat(lng), parseFloat(lat)])
@@ -64,12 +73,12 @@ export default {
         commit("showAddRequestDialog", false)
       }
     },
-    async getRequests({ commit }) {
-      try {
-        
-      } catch (e) {
-        
-      }
-    }
+    getRequests: firebaseAction(({ bindFirebaseRef }) => {
+      const { uid } = auth().currentUser
+      return bindFirebaseRef('requests', database()
+        .ref("requests")
+        .orderByChild("uid")
+        .equalTo(uid))
+    })
   }
 }

@@ -12,7 +12,6 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App),
   created() {
     initializeApp({
       apiKey: "AIzaSyDYu49q4dCwqqiXtX-T6ebGVSq9PwH3M18",
@@ -29,12 +28,14 @@ new Vue({
         store.commit("buttonLoading", true)
         if (user) {
           const { email, emailVerified, uid } = user
-          console.log("user exists");
-          const snapshot = await database().ref(`users/${uid}`).once("value")
           store.commit("setUserDetails", {
             email,
             emailVerified,
-            uid,
+            uid
+          })
+          console.log("user exists");
+          const snapshot = await database().ref(`users/${uid}`).once("value")
+          store.commit("setUserDetails", {
             ...snapshot.val()
           })
           if (snapshot.val().role === 1) {
@@ -52,5 +53,6 @@ new Vue({
         store.commit("buttonLoading", false)
       }
     })
-  }
+  },
+  render: h => h(App),
 }).$mount('#app')

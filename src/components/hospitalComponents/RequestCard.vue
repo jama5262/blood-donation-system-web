@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row v-for="n in 4" justify="center" align="center">
+    <v-row v-for="n in data" justify="center" align="center">
       <v-col class="date-container" md="1">
         <span class="date font-weight-bold">20</span>
         <br />
@@ -32,9 +32,14 @@
                     <span style="text-align: left" class="primary--text">VIEW MORE</span>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    <span class="primary--text date">0 </span><span>donors reached</span><br>
-                    <span class="primary--text date">7 </span><span>donors accepted the request</span><br>
-                    <span class="gender">Reason</span><br>
+                    <span class="primary--text date">0</span>
+                    <span>donors reached</span>
+                    <br />
+                    <span class="primary--text date">7</span>
+                    <span>donors accepted the request</span>
+                    <br />
+                    <span class="gender">Reason</span>
+                    <br />
                     <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus beatae culpa odio aperiam, necessitatibus repellendus cupiditate aliquam sit, consectetur aliquid quaerat vel fugit reiciendis at temporibus, obcaecati et soluta esse!</span>
                     <div class="d-flex justify-end pt-5">
                       <v-btn color="primary" text>Close Request</v-btn>
@@ -51,7 +56,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["data"],
+  data(){ 
+    return {
+      j: this.data
+    };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -63,7 +75,7 @@ span {
   text-align: center;
 }
 .v-card {
-  border-radius: 10px
+  border-radius: 10px;
 }
 .date {
   font-size: 2.125rem !important;
