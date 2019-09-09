@@ -4,10 +4,10 @@
     <v-tab>Past Requests</v-tab>
 
     <v-tab-item>
-      <RequestCard :data="activeRequests"/>
+      <RequestCard :data="activeRequests" />
     </v-tab-item>
     <v-tab-item>
-      <RequestCard />
+      <RequestCard :data="pastRequests" />
     </v-tab-item>
   </v-tabs>
 </template>
@@ -19,11 +19,14 @@ import RequestCard from "../../../components/hospitalComponents/RequestCard";
 export default {
   computed: {
     activeRequests() {
-      return this.$store.getters["hospitalModule/getActiveRequest"]
+      return this.$store.getters["hospitalModule/getActiveRequest"];
+    },
+    pastRequests() {
+      return this.$store.getters["hospitalModule/getPastRequest"];
     }
   },
   created() {
-    setTimeout( () => {
+    setTimeout(() => {
       this.$store.dispatch("hospitalModule/getRequests");
     }, 1000);
   },

@@ -39,7 +39,7 @@ export default {
     getActiveRequest(state) {
       return state.requests.filter(request => request.active === true)
     },
-    getPatRequest(state) {
+    getPastRequest(state) {
       return state.requests.filter(request => request.active === false)
     }
   },
