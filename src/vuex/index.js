@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { auth, database, storage } from "firebase/app"
+import { vuexfireMutations } from 'vuexfire'
 
 import HospitalModule from "./modules/hospitalModule"
 
@@ -23,7 +24,7 @@ export default new Vuex.Store({
   },
   mutations: {
     setUserDetails(state, payload) {
-      state.userDetails = payload
+      state.userDetails = { ...state.userDetails, ...payload }
     },
     setLocationDetails(state, payload) {
       state.locationDetails = payload
@@ -38,7 +39,8 @@ export default new Vuex.Store({
       state.alert.showAlert = payload.showAlert || false
       state.alert.message = payload.message || ""
       state.alert.type = payload.type || "success"
-    }
+    },
+    ...vuexfireMutations
   },
   getters: {
     getLocationDetails: (state) => {
