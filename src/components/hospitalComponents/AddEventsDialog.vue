@@ -88,7 +88,7 @@
       <v-card-actions>
         <div class="flex-grow-1"></div>
         <v-btn color="primary" text @click="closeDialog">Cancel</v-btn>
-        <v-btn :loading="buttonLoading" @click="addRequest" color="primary" text>Add</v-btn>
+        <v-btn :loading="buttonLoading" @click="addEvent" color="primary" text>Add</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -116,13 +116,14 @@ export default {
     };
   },
   methods: {
-    addRequest() {
+    addEvent() {
       if (this.valid) {
-        this.$store.dispatch("hospitalModule/addRequest", {
-          recepientName: this.recepientName,
-          bloodType: this.bloodType,
-          gender: this.gender,
-          requestReason: this.requestReason
+        this.$store.dispatch("hospitalModule/addEvent", {
+          date: this.date,
+          startTime: this.startTime,
+          endTime: this.endTime,
+          eventDescription: this.eventDescription,
+          eventName: this.eventName
         });
       }
     },

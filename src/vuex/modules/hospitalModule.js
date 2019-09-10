@@ -1,7 +1,7 @@
-import { database, auth } from "firebase";
+import { auth, database } from "firebase";
 import { GeoFire } from "geofire";
-import { firebaseAction } from 'vuexfire'
 import moment from "moment";
+import { firebaseAction } from 'vuexfire';
 
 export default {
   namespaced: true,
@@ -113,7 +113,7 @@ export default {
           key,
           timestamp: getters.getTimestamp
         })
-        let geofire = new GeoFire(database().ref(`geofire/${bloodType}`))
+        let geofire = new GeoFire(database().ref(`geofire/request/${bloodType}`))
         await geofire.set(key, [parseFloat(lng), parseFloat(lat)])
       } catch (e) {
         commit("setAlertMessage", {
@@ -147,6 +147,43 @@ export default {
       } finally {
         commit("buttonLoading", false, { root: true })
         commit("showCloseRequestDialog", false)
+      }
+    },
+    async addEvent({ commit, getter }) {
+      try {
+        commit("setAlertMessage", {
+          showAlert: false,
+          message: "",
+        })
+        commit("buttonLoading", true, { root: true })
+        const { hname, place, uid } = getters.getRequestDetails;
+        const { eventName, startTime, endTime, date, eventDescription } = payload
+        const eventRef = database().ref("events")
+        const key = eventRef.push().key
+        await eventRef.child(key).set({
+          hname,
+          eventName,
+          startTime,
+          endTime,
+          date,
+          eventDescription,
+          uid,
+          place,
+          accepted: 0,
+          viewed: 0,
+          active: true,
+          key,
+          timestamp: getters.getTimestamp
+        })
+      } catch (e) {
+        commit("setAlertMessage", {
+          showAlert: true,
+          message: "There was an error adding the event, please try again",
+          type: "error"
+        })
+      } finally {
+        commit("buttonLoading", false, { root: true })
+        commit("showAddRequestDialog", false)
       }
     }
   }

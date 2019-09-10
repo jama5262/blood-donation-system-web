@@ -1,9 +1,9 @@
+import { auth, database, storage } from "firebase/app"
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { auth, database, storage } from "firebase/app"
 import { vuexfireMutations } from 'vuexfire'
-
 import HospitalModule from "./modules/hospitalModule"
+
 
 Vue.use(Vuex)
 
