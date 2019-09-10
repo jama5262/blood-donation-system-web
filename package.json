@@ -13,6 +13,7 @@
     "geofire": "^5.0.1",
     "leaflet": "^1.5.1",
     "leaflet-geosearch": "^2.7.0",
+    "moment": "^2.24.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vue2-leaflet": "^2.2.1",

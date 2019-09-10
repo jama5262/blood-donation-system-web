@@ -1,6 +1,7 @@
 import { database, auth } from "firebase";
 import { GeoFire } from "geofire";
 import { firebaseAction } from 'vuexfire'
+import moment from "moment";
 
 export default {
   namespaced: true,
@@ -41,6 +42,9 @@ export default {
     },
     getPastRequest(state) {
       return state.requests.filter(request => request.active === false)
+    },
+    getTimestamp() {
+      return moment().unix() * 1000
     }
   },
   actions: {
@@ -65,7 +69,8 @@ export default {
           accepted: 0,
           viewed: 0,
           active: true,
-          key
+          key,
+          timestamp: getters.getTimestamp
         })
         let geofire = new GeoFire(database().ref(`geofire/${bloodType}`))
         await geofire.set(key, [parseFloat(lng), parseFloat(lat)])
