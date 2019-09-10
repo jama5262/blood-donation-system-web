@@ -32,18 +32,37 @@
                     <span style="text-align: left" class="primary--text">VIEW MORE</span>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    <span class="primary--text date">{{ n.viewed }} </span>
+                    <span class="primary--text mr-2 date">{{ n.viewed }}</span>
                     <span>donors reached</span>
                     <br />
-                    <span class="primary--text date">{{ n.accepted }} </span>
+                    <span class="primary--text mr-2 date">{{ n.accepted }}</span>
                     <span>donors accepted the request</span>
                     <br />
                     <span class="gender">Reason</span>
                     <br />
                     <span>{{ n.requestReason }}</span>
-                    <div class="d-flex justify-end pt-5">
-                      <v-btn color="primary" text>Close Request</v-btn>
-                    </div>
+                    <v-dialog v-model="showDialog" width="500">
+                      <template v-slot:activator="{ on }">
+                        <div class="d-flex justify-end pt-5">
+                          <v-btn v-if="n.active" color="primary" text v-on="on">Close Request</v-btn>
+                        </div>
+                      </template>
+
+                      <v-card>
+                        <v-card-title class="font-weight-bold" primary-title>Close Request</v-card-title>
+                        <v-card-text>Are you sure you want to close the request?</v-card-text>
+                        <v-card-actions>
+                          <div class="flex-grow-1"></div>
+                          <v-btn color="primary" text @click="closeDialog">Cancel</v-btn>
+                          <v-btn
+                            :loading="buttonLoading"
+                            @click="closeRequest(n.key)"
+                            color="primary"
+                            text
+                          >Close</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -62,6 +81,28 @@ export default {
     return {
       j: this.data
     };
+  },
+  methods: {
+    closeDialog() {
+      this.$store.commit("hospitalModule/showCloseRequestDialog", false);
+    },
+    closeRequest(key) {
+      this.$store.dispatch("hospitalModule/closeRequest", key);
+    }
+  },
+  computed: {
+    buttonLoading() {
+      return this.$store.state.buttonLoading;
+    },
+    showDialog: {
+      get() {
+        return this.$store.state.hospitalModule.dialogs.closeRequestDialog
+          .showDialog;
+      },
+      set(value) {
+        this.$store.commit("hospitalModule/showCloseRequestDialog", value);
+      }
+    }
   }
 };
 </script>

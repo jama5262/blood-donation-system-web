@@ -1,15 +1,17 @@
 <template>
-  <v-tabs grow>
-    <v-tab>Active Requests</v-tab>
-    <v-tab>Past Requests</v-tab>
+  <div>
+    <v-tabs grow>
+      <v-tab>Active Requests</v-tab>
+      <v-tab>Past Requests</v-tab>
 
-    <v-tab-item>
-      <RequestCard :data="activeRequests" />
-    </v-tab-item>
-    <v-tab-item>
-      <RequestCard :data="pastRequests" />
-    </v-tab-item>
-  </v-tabs>
+      <v-tab-item>
+        <RequestCard :data="activeRequests" />
+      </v-tab-item>
+      <v-tab-item>
+        <RequestCard :data="pastRequests" />
+      </v-tab-item>
+    </v-tabs>
+  </div>
 </template>
 
 <script>

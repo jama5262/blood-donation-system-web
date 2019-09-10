@@ -14,6 +14,9 @@ export default {
     dialogs: {
       addRequestDailog: {
         showDialog: false
+      },
+      closeRequestDialog: {
+        showDialog: false
       }
     }
   },
@@ -32,6 +35,9 @@ export default {
     showAddRequestDialog(state, showDialog) {
       state.dialogs.addRequestDailog.showDialog = showDialog
     },
+    showCloseRequestDialog(state, showDialog) {
+      state.dialogs.closeRequestDialog.showDialog = showDialog
+    },
   },
   getters: {
     getRequestDetails(_state, _getter, rootState) {
@@ -48,6 +54,13 @@ export default {
     }
   },
   actions: {
+    getRequests: firebaseAction(({ bindFirebaseRef }) => {
+      const { uid } = auth().currentUser
+      return bindFirebaseRef('requests', database()
+        .ref("requests")
+        .orderByChild("uid")
+        .equalTo(uid))
+    }),
     async addRequest({ commit, getters }, payload) {
       try {
         commit("buttonLoading", true, { root: true })
@@ -81,12 +94,18 @@ export default {
         commit("showAddRequestDialog", false)
       }
     },
-    getRequests: firebaseAction(({ bindFirebaseRef }) => {
-      const { uid } = auth().currentUser
-      return bindFirebaseRef('requests', database()
-        .ref("requests")
-        .orderByChild("uid")
-        .equalTo(uid))
-    })
+    async closeRequest({ commit }, payload) {
+      try {
+        commit("buttonLoading", true, { root: true })
+        await database().ref(`requests/${payload}`).update({
+          active: false
+        })
+      } catch (e) {
+        console.log(`Error updating => ${e}`);
+      } finally {
+        commit("buttonLoading", false, { root: true })
+        commit("showCloseRequestDialog", false)
+      }
+    }
   }
 }

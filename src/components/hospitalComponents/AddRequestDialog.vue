@@ -1,9 +1,5 @@
 <template>
   <v-dialog v-model="showDialog" width="500">
-    <template v-slot:activator="{ on }">
-      <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn>
-    </template>
-
     <v-card>
       <v-card-title class="font-weight-bold" primary-title>Add Request</v-card-title>
 
