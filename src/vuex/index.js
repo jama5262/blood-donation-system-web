@@ -74,10 +74,19 @@ export default new Vuex.Store({
     },
     async firebaseSignOut({ commit }) {
       try {
+        commit("setAlertMessage", {
+          showAlert: false,
+          message: "",
+        })
         await auth().signOut()
         commit("setUserDetails", {})
       } catch (e) {
-        console.log("Error signing out ");
+        console.log("Error signing out");
+        commit("setAlertMessage", {
+          showAlert: true,
+          message: "There was en error signing out",
+          type: "error"
+        })
       }
     },
     async firebaseSignUp({ commit, getters }, payload) {

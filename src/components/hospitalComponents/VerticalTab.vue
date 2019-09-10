@@ -16,6 +16,7 @@
 <script>
 import Requests from "../../views/hospitalViews/homeViews/Requests";
 import Events from "../../views/hospitalViews/homeViews/Events";
+
 export default {
   methods: {
     changedTab(value) {
@@ -24,7 +25,7 @@ export default {
   },
   components: {
     Requests,
-    Events
+    Events,
   }
 };
 </script>

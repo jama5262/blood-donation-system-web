@@ -11,6 +11,12 @@ export default {
       type: 1,
       name: "Add Request"
     },
+    alert: {
+      message: "",
+      type: "success",
+      dismissible: true,
+      showAlert: false
+    },
     dialogs: {
       addRequestDailog: {
         showDialog: false
@@ -50,6 +56,12 @@ export default {
     showCloseEventDialog(state, showDialog) {
       state.dialogs.closeEventDialog.showDialog = showDialog
     },
+    setAlertMessage(state, payload) {
+      state.alert.showAlert = payload.showAlert || false
+      state.alert.message = payload.message || ""
+      state.alert.type = payload.type || "success"
+      state.alert.dismissible = payload.dismissible || true
+    },
   },
   getters: {
     getRequestDetails(_state, _getter, rootState) {
@@ -75,6 +87,10 @@ export default {
     }),
     async addRequest({ commit, getters }, payload) {
       try {
+        commit("setAlertMessage", {
+          showAlert: false,
+          message: "",
+        })
         commit("buttonLoading", true, { root: true })
         const { hname, imageUrl, lat, lng, place, uid } = getters.getRequestDetails;
         const { recepientName, bloodType, gender, requestReason } = payload
@@ -100,6 +116,11 @@ export default {
         let geofire = new GeoFire(database().ref(`geofire/${bloodType}`))
         await geofire.set(key, [parseFloat(lng), parseFloat(lat)])
       } catch (e) {
+        commit("setAlertMessage", {
+          showAlert: true,
+          message: "There was an error adding the request, please try again",
+          type: "error"
+        })
         console.log(`There was an error setting geofire location ${e}`);
       } finally {
         commit("buttonLoading", false, { root: true })
@@ -108,11 +129,20 @@ export default {
     },
     async closeRequest({ commit }, payload) {
       try {
+        commit("setAlertMessage", {
+          showAlert: false,
+          message: "",
+        })
         commit("buttonLoading", true, { root: true })
         await database().ref(`requests/${payload}`).update({
           active: false
         })
       } catch (e) {
+        commit("setAlertMessage", {
+          showAlert: true,
+          message: "There was an error closing the request, please try again",
+          type: "error"
+        })
         console.log(`Error updating => ${e}`);
       } finally {
         commit("buttonLoading", false, { root: true })

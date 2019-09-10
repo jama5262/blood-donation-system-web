@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import { auth, database } from "firebase";
 import RequestCard from "../../../components/hospitalComponents/RequestCard";
 
 export default {

@@ -1,19 +1,17 @@
 <template>
   <v-content>
     <v-container class="d-flex align-center justify-center">
-      <router-view/>
+      <router-view />
     </v-container>
   </v-content>
 </template>
 
 <script>
-  export default {
-    
-  }
+export default {};
 </script>
 
 <style scoped>
-  .container {
-    height: 100%
-  }
+.container {
+  height: 100%;
+}
 </style>
