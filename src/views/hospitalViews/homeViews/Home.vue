@@ -3,6 +3,7 @@
     <Appbar />
     <VerticalTab />
     <AddRequestDialog />
+    <AddEventsDialog />
   </div>
 </template>
 
@@ -10,12 +11,14 @@
 import Appbar from "../../../components/hospitalComponents/Appbar";
 import VerticalTab from "../../../components/hospitalComponents/VerticalTab";
 import AddRequestDialog from "../../../components/hospitalComponents/AddRequestDialog";
+import AddEventsDialog from "../../../components/hospitalComponents/AddEventsDialog";
 
 export default {
   components: {
     Appbar,
     VerticalTab,
-    AddRequestDialog
+    AddRequestDialog,
+    AddEventsDialog
   }
 };
 </script>

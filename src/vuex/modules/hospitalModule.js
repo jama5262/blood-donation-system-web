@@ -17,6 +17,12 @@ export default {
       },
       closeRequestDialog: {
         showDialog: false
+      },
+      addEventDailog: {
+        showDialog: false
+      },
+      closeEventDialog: {
+        showDialog: false
       }
     }
   },
@@ -37,6 +43,12 @@ export default {
     },
     showCloseRequestDialog(state, showDialog) {
       state.dialogs.closeRequestDialog.showDialog = showDialog
+    },
+    showAddEventDialog(state, showDialog) {
+      state.dialogs.addEventDailog.showDialog = showDialog
+    },
+    showCloseEventDialog(state, showDialog) {
+      state.dialogs.closeEventDialog.showDialog = showDialog
     },
   },
   getters: {
