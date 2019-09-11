@@ -4,6 +4,8 @@
       <v-card-title class="font-weight-bold" primary-title>Add Event</v-card-title>
 
       <v-form v-model="valid">
+        <Alert />
+        <DialogMap />
         <v-text-field
           outlined
           :rules="rules.eventName"
@@ -22,7 +24,7 @@
           min-width="290px"
         >
           <template v-slot:activator="{ on }">
-            <v-text-field v-model="date" outlined label="Event Date" readonly v-on="on"></v-text-field>
+            <v-text-field v-model="date" :rules="rules.date" outlined label="Event Date" readonly v-on="on"></v-text-field>
           </template>
           <v-date-picker v-model="date" no-title scrollable>
             <div class="flex-grow-1"></div>
@@ -43,7 +45,7 @@
               min-width="290px"
             >
               <template v-slot:activator="{ on }">
-                <v-text-field v-model="startTime" outlined label="Start Time" readonly v-on="on"></v-text-field>
+                <v-text-field v-model="startTime" :rules="rules.time" outlined label="Start Time" readonly v-on="on"></v-text-field>
               </template>
               <v-time-picker v-model="startTime" no-title scrollable>
                 <div class="flex-grow-1"></div>
@@ -64,7 +66,7 @@
               min-width="290px"
             >
               <template v-slot:activator="{ on }">
-                <v-text-field v-model="endTime" outlined label="End Time" readonly v-on="on"></v-text-field>
+                <v-text-field v-model="endTime" :rules="rules.time" outlined label="End Time" readonly v-on="on"></v-text-field>
               </template>
               <v-time-picker v-model="endTime" no-title scrollable>
                 <div class="flex-grow-1"></div>
@@ -95,6 +97,8 @@
 </template>
 
 <script>
+import DialogMap from "../alertComponents/DialogMap";
+import Alert from "../../components/hospitalComponents/Alert";
 export default {
   data() {
     return {
@@ -109,8 +113,8 @@ export default {
       eventDescription: "",
       rules: {
         eventName: [v => !!v || "Please enter event name"],
-        bloodType: [v => !!v || "Please choose a blood type"],
-        gender: [v => !!v || "Please choose a gender"],
+        date: [v => !!v || "Please choose a date"],
+        time: [v => !!v || "Please choose a time"],
         eventDescription: [v => !!v || "Please enter description of the event"]
       }
     };
@@ -144,6 +148,10 @@ export default {
         this.$store.commit("hospitalModule/showAddEventDialog", value);
       }
     }
+  },
+  components: {
+    DialogMap,
+    Alert
   }
 };
 </script>

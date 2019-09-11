@@ -49,11 +49,6 @@ new Vue({
         }
       } catch (e) {
         console.log(e);
-        store.commit("hospitalModule/setAlertMessage", {
-          showAlert: true,
-          message: e.message || e,
-          type: "error"
-        })
       } finally {
         store.commit("buttonLoading", false)
       }

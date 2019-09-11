@@ -4,6 +4,17 @@
       <v-col md="8" class="pb-0">
         <v-card>
           <v-row>
+            <v-col class="py-0">
+              <v-img
+              style="border-top-left-radius: 10px; border-top-right-radius: 10px"
+              src="https://picsum.photos/id/11/500/300"
+              aspect-ratio="1"
+              class="grey lighten-2"
+              height="150px"
+            ></v-img>
+            </v-col>
+          </v-row>
+          <v-row>
             <v-col class="px-6 py-3">
               <span class="eventName font-weight-bold">Event Name</span>
               <br />
@@ -24,9 +35,7 @@
                       <v-col class="pt-0">
                         <span class="location">Created On</span>
                         <br />
-                        <span
-                          class="font-weight-bold"
-                        >12:00 PM, 24 Aug 2019</span>
+                        <span class="font-weight-bold">12:00 PM, 24 Aug 2019</span>
                       </v-col>
                     </v-row>
                     <v-row>
@@ -100,7 +109,7 @@ export default {
   border-radius: 10px;
 }
 .container {
-  padding-bottom: 0
+  padding-bottom: 0;
 }
 .eventName {
   font-size: 1.2rem !important;

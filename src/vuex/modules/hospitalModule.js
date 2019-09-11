@@ -115,6 +115,7 @@ export default {
         })
         let geofire = new GeoFire(database().ref(`geofire/request/${bloodType}`))
         await geofire.set(key, [parseFloat(lng), parseFloat(lat)])
+        commit("showAddRequestDialog", false)
       } catch (e) {
         commit("setAlertMessage", {
           showAlert: true,
@@ -124,7 +125,6 @@ export default {
         console.log(`There was an error setting geofire location ${e}`);
       } finally {
         commit("buttonLoading", false, { root: true })
-        commit("showAddRequestDialog", false)
       }
     },
     async closeRequest({ commit }, payload) {
@@ -149,15 +149,18 @@ export default {
         commit("showCloseRequestDialog", false)
       }
     },
-    async addEvent({ commit, getter }) {
+    async addEvent({ commit, getters, rootGetters }, payload) {
       try {
         commit("setAlertMessage", {
           showAlert: false,
           message: "",
         })
         commit("buttonLoading", true, { root: true })
-        const { hname, place, uid } = getters.getRequestDetails;
+        const { hname, uid } = getters.getRequestDetails;
         const { eventName, startTime, endTime, date, eventDescription } = payload
+        if (rootGetters.getLocationDetails.place === "") {
+          throw "Please set the location of the hospital"
+        }
         const eventRef = database().ref("events")
         const key = eventRef.push().key
         await eventRef.child(key).set({
@@ -168,22 +171,24 @@ export default {
           date,
           eventDescription,
           uid,
-          place,
-          accepted: 0,
           viewed: 0,
           active: true,
           key,
-          timestamp: getters.getTimestamp
+          timestamp: getters.getTimestamp,
+          ...rootGetters.getLocationDetails
         })
+        const { lat, lng } = rootGetters.getLocationDetails
+        let geofire = new GeoFire(database().ref(`geofire/events`))
+        await geofire.set(key, [parseFloat(lng), parseFloat(lat)])
+        commit("showAddEventDialog", false)
       } catch (e) {
         commit("setAlertMessage", {
           showAlert: true,
-          message: "There was an error adding the event, please try again",
+          message: e.message || e || "There was an error adding the event, please try again",
           type: "error"
         })
       } finally {
         commit("buttonLoading", false, { root: true })
-        commit("showAddRequestDialog", false)
       }
     }
   }
