@@ -5,6 +5,25 @@
 
       <v-form v-model="valid">
         <Alert />
+        <v-img
+          v-if="imageUrl"
+          :src="imageUrl"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          height="150px"
+          style="border-radius: 10px; margin-bottom: 15px"
+        ></v-img>
+        <v-btn @click="pickFile" style="margin-bottom: 10px" color="primary" rounded>
+          Upload Image
+          <v-icon right dark>mdi-cloud-upload</v-icon>
+        </v-btn>
+        <input
+          style="display: none"
+          type="file"
+          accept="image/*"
+          ref="uploadImage"
+          @change="uploadImage"
+        />
         <DialogMap />
         <v-text-field
           outlined
@@ -24,7 +43,14 @@
           min-width="290px"
         >
           <template v-slot:activator="{ on }">
-            <v-text-field v-model="date" :rules="rules.date" outlined label="Event Date" readonly v-on="on"></v-text-field>
+            <v-text-field
+              v-model="date"
+              :rules="rules.date"
+              outlined
+              label="Event Date"
+              readonly
+              v-on="on"
+            ></v-text-field>
           </template>
           <v-date-picker v-model="date" no-title scrollable>
             <div class="flex-grow-1"></div>
@@ -45,9 +71,16 @@
               min-width="290px"
             >
               <template v-slot:activator="{ on }">
-                <v-text-field v-model="startTime" :rules="rules.time" outlined label="Start Time" readonly v-on="on"></v-text-field>
+                <v-text-field
+                  v-model="startTime"
+                  :rules="rules.time"
+                  outlined
+                  label="Start Time"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
               </template>
-              <v-time-picker v-model="startTime" no-title scrollable>
+              <v-time-picker v-model="startTime" scrollable>
                 <div class="flex-grow-1"></div>
                 <v-btn text color="primary" @click="startTimeMenu = false">Cancel</v-btn>
                 <v-btn text color="primary" @click="$refs.startTimeMenu.save(startTime)">OK</v-btn>
@@ -66,9 +99,16 @@
               min-width="290px"
             >
               <template v-slot:activator="{ on }">
-                <v-text-field v-model="endTime" :rules="rules.time" outlined label="End Time" readonly v-on="on"></v-text-field>
+                <v-text-field
+                  v-model="endTime"
+                  :rules="rules.time"
+                  outlined
+                  label="End Time"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
               </template>
-              <v-time-picker v-model="endTime" no-title scrollable>
+              <v-time-picker v-model="endTime" scrollable>
                 <div class="flex-grow-1"></div>
                 <v-btn text color="primary" @click="endTimeMenu = false">Cancel</v-btn>
                 <v-btn text color="primary" @click="$refs.endTimeMenu.save(endTime)">OK</v-btn>
@@ -111,6 +151,8 @@ export default {
       startTime: "",
       endTime: "",
       eventDescription: "",
+      imageUrl: "",
+      image: null,
       rules: {
         eventName: [v => !!v || "Please enter event name"],
         date: [v => !!v || "Please choose a date"],
@@ -120,6 +162,19 @@ export default {
     };
   },
   methods: {
+    pickFile() {
+      this.$refs.uploadImage.click();
+    },
+    uploadImage(event) {
+      const files = event.target.files;
+      this.image = files[0];
+      let fileName = files[0].name;
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        this.imageUrl = fileReader.result;
+      });
+      fileReader.readAsDataURL(files[0]);
+    },
     addEvent() {
       if (this.valid) {
         this.$store.dispatch("hospitalModule/addEvent", {
@@ -127,7 +182,8 @@ export default {
           startTime: this.startTime,
           endTime: this.endTime,
           eventDescription: this.eventDescription,
-          eventName: this.eventName
+          eventName: this.eventName,
+          image: this.image
         });
       }
     },

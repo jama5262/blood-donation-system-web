@@ -1,4 +1,4 @@
-import { auth, database } from "firebase";
+import { auth, database, storage } from "firebase";
 import { GeoFire } from "geofire";
 import moment from "moment";
 import { firebaseAction } from 'vuexfire';
@@ -7,6 +7,7 @@ export default {
   namespaced: true,
   state: {
     requests: [],
+    events: [],
     addButton: {
       type: 1,
       name: "Add Request"
@@ -68,10 +69,16 @@ export default {
       return rootState.userDetails
     },
     getActiveRequest(state) {
-      return state.requests.filter(request => request.active === true)
+      return state.requests.filter(request => request.active === true).reverse()
     },
     getPastRequest(state) {
-      return state.requests.filter(request => request.active === false)
+      return state.requests.filter(request => request.active === false).reverse()
+    },
+    getActiveEvents(state) {
+      return state.events.filter(event => event.active === true).reverse()
+    },
+    getPastEvent(state) {
+      return state.events.filter(event => event.active === false).reverse()
     },
     getTimestamp() {
       return moment().unix() * 1000
@@ -82,6 +89,13 @@ export default {
       const { uid } = auth().currentUser
       return bindFirebaseRef('requests', database()
         .ref("requests")
+        .orderByChild("uid")
+        .equalTo(uid))
+    }),
+    getEvents: firebaseAction(({ bindFirebaseRef }) => {
+      const { uid } = auth().currentUser
+      return bindFirebaseRef('events', database()
+        .ref("events")
         .orderByChild("uid")
         .equalTo(uid))
     }),
@@ -157,20 +171,29 @@ export default {
         })
         commit("buttonLoading", true, { root: true })
         const { hname, uid } = getters.getRequestDetails;
-        const { eventName, startTime, endTime, date, eventDescription } = payload
+        const { eventName, startTime, endTime, date, eventDescription, image } = payload
         if (rootGetters.getLocationDetails.place === "") {
           throw "Please set the location of the hospital"
+        } else if (image === null) {
+          throw "Please add a photo of the event"
         }
+        const momentDate = moment(date, "YYYY-MM-DD").format("Do MMM YYYY")
+        const createdOn = moment().format("hh:mm a, Do MMM YYYY")
         const eventRef = database().ref("events")
         const key = eventRef.push().key
+        const imageExtension = image.name.slice(image.name.lastIndexOf("."))
+        const snapshot = await storage().ref(`Hospital/${ uid }/events/${ key }.${ imageExtension }`).put(image)
+        const imageUrl = await snapshot.ref.getDownloadURL()
         await eventRef.child(key).set({
           hname,
           eventName,
           startTime,
           endTime,
-          date,
+          date: momentDate,
           eventDescription,
           uid,
+          imageUrl,
+          createdOn,
           viewed: 0,
           active: true,
           key,
@@ -190,6 +213,28 @@ export default {
       } finally {
         commit("buttonLoading", false, { root: true })
       }
-    }
+    },
+    async closeEvent({ commit }, payload) {
+      try {
+        commit("setAlertMessage", {
+          showAlert: false,
+          message: "",
+        })
+        commit("buttonLoading", true, { root: true })
+        await database().ref(`events/${payload}`).update({
+          active: false
+        })
+      } catch (e) {
+        commit("setAlertMessage", {
+          showAlert: true,
+          message: "There was an error closing the event, please try again",
+          type: "error"
+        })
+        console.log(`Error updating => ${e}`);
+      } finally {
+        commit("buttonLoading", false, { root: true })
+        commit("showCloseEventDialog", false)
+      }
+    },
   }
 }

@@ -59,7 +59,7 @@
                             @click="closeRequest(n.key)"
                             color="primary"
                             text
-                          >Close</v-btn>
+                          >Close Request</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>

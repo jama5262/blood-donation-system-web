@@ -6,10 +6,11 @@
         <v-tab>Past Events</v-tab>
 
         <v-tab-item>
-          <EventCard />
-          <EventCard />
+          <EventCard :data="activeEvents" />
         </v-tab-item>
-        <v-tab-item></v-tab-item>
+        <v-tab-item>
+          <EventCard :data="pastEvents" />
+        </v-tab-item>
       </v-tabs>
     </v-col>
     <v-col>
@@ -45,10 +46,23 @@ export default {
       })
     };
   },
+  computed: {
+    activeEvents() {
+      return this.$store.getters["hospitalModule/getActiveEvents"];
+    },
+    pastEvents() {
+      return this.$store.getters["hospitalModule/getPastEvent"];
+    }
+  },
   methods: {
     changeLoc() {
       this.mymap.setView([-1.31749223699299, 36.8395721912384], 13)
     }
+  },
+  created() {
+    setTimeout(() => {
+      this.$store.dispatch("hospitalModule/getEvents");
+    }, 1000);
   },
   mounted() {
     this.mymap = L.map("mapid")
