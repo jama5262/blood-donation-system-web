@@ -25,6 +25,7 @@
               </tbody>
             </template>
           </v-data-table>
+          <div id="donorProfileMap"></div>
         </v-card>
       </v-col>
     </v-row>
@@ -68,7 +69,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  max-width: 1500px;
+  max-width: 1000px;
 }
 .v-card {
   border-radius: 10px;

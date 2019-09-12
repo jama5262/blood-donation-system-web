@@ -38,7 +38,8 @@ export default {
         donorProfile: {}
       }
     },
-    eventMap: null
+    eventMap: null,
+    donorProfileMap: null
   },
   mutations: {
     initalizeEventMap(state) {
@@ -68,6 +69,18 @@ export default {
         .addTo(state.eventMap)
         .bindPopup(payload.eventName)
         .openPopup();
+    },
+    initalizeDonorProfileMap(state, payload) {
+      state.donorProfileMap = L.map("donorProfileMap")
+      state.donorProfileMap.setView([51.505, -0.09], 12);
+      // const icon = L.icon({
+      //   iconUrl: require('../../assets/marker.png'),
+      //   iconSize: [40, 40],
+      //   iconAnchor: [22, 94],
+      //   popupAnchor: [-3, -90]
+      // })
+      // L.marker([y, x], { icon: icon })
+      //   .addTo(state.donorProfileMap)
     },
     changeAddButton(state, payload) {
       state.addButton.type = payload
@@ -155,8 +168,11 @@ export default {
           ...payload,
           ...snapshot.val()
         });
+        commit("initalizeDonorProfileMap", { payload: snapshot.val().latlng });
         commit("showDonorDetailDialog", true);
       } catch (error) {
+        console.log(error);
+        
         commit("setAlertMessage", {
           showAlert: true,
           message: "Error getting donor profile, please try again",

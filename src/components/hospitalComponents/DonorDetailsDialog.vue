@@ -66,7 +66,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <div id="donorDetailsMap">MAP HERE</div>
+            <div id="donorProfileMap"></div>
           </v-col>
         </v-row>
       </v-container>
@@ -127,5 +127,8 @@ export default {
 }
 .v-card {
   padding: 15px 30px
+}
+#donorProfileMap {
+  height: 300px;
 }
 </style>
