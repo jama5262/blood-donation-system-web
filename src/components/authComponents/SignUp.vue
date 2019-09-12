@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <p class="display-2 font-weight-bold primary--text">Sign Up</p>
+    <p class="name font-weight-bold primary--text">Sign Up</p>
     <Alert />
     <v-card max-width="344" class="mx-auto">
       <v-img
@@ -23,10 +23,12 @@
         @change="uploadImage"
       />
       <DialogMap />
-      <v-text-field v-model="signUpData.hname" label="Hospital Name"></v-text-field>
-      <v-text-field v-model="signUpData.email" type="email" label="Email"></v-text-field>
-      <v-text-field v-model="signUpData.password" type="password" label="Password"></v-text-field>
-      <v-text-field v-model="signUpData.phone" label="Phone"></v-text-field>
+      <v-form class="pt-3 pb-0">
+        <v-text-field :rules="rules" outlined v-model="signUpData.hname" label="Hospital Name"></v-text-field>
+        <v-text-field :rules="rules" outlined v-model="signUpData.email" type="email" label="Email"></v-text-field>
+        <v-text-field :rules="rules" outlined v-model="signUpData.password" type="password" label="Password"></v-text-field>
+        <v-text-field :rules="rules" outlined v-model="signUpData.phone" label="Phone"></v-text-field>
+      </v-form>
     </v-card>
     <div class="button-container d-flex justify-space-between">
       <v-btn @click="goBack" rounded color="primary">Back</v-btn>
@@ -43,6 +45,7 @@ import Alert from "../alertComponents/Alert";
 export default {
   data() {
     return {
+      rules: [v => !!v || "This field is required"],
       signUpData: {
         imageUrl: "",
         image: null,
@@ -78,7 +81,7 @@ export default {
     async signup() {
       try {
         await this.$store.dispatch("firebaseSignUp", this.signUpData);
-        this.$router.replace('/hospital')
+        this.$router.replace("/hospital");
       } catch (error) {}
     },
     goBack() {
@@ -110,5 +113,10 @@ export default {
 .v-image {
   margin-bottom: 10px;
   border-radius: 10px;
+}
+.name {
+  font-size: 3rem !important;
+  line-height: 3.125rem;
+  letter-spacing: normal !important;
 }
 </style>

@@ -5,20 +5,20 @@
         <v-card>
           <v-data-table
             :headers="headers"
-            :items="desserts"
+            :items="donorDetails"
             :items-per-page="5"
             click:row="clicked"
           >
             <template v-slot:body="{ items }">
               <tbody>
                 <tr v-for="item in items" :key="item.name">
-                  <td>{{ item.name }}</td>
+                  <td>{{ item.fullName }}</td>
+                  <td>{{ item.nationalId }}</td>
                   <td>{{ item.noOfDonations }}</td>
                   <td>{{ item.lastDonated }}</td>
-                  <td>{{ item.placeOfDonation }}</td>
-                  <td>{{ item.hospitalDonatedTo }}</td>
+                  <td>{{ item.hname }}</td>
                   <td>
-                    <v-btn small text color="primary">View Profile</v-btn>
+                    <v-btn small text color="primary">View More</v-btn>
                   </td>
                 </tr>
               </tbody>
@@ -41,32 +41,24 @@ export default {
           sortable: false,
           value: "name"
         },
+        { text: "National ID", value: "nationalID", align: "left" },
         { text: "No. of Donations", value: "noOfDonations", align: "left" },
         { text: "Last Donated", value: "lastDonated", align: "left" },
-        { text: "Place Of Donation", value: "placeOfDonation" },
         { text: "Hospital Donated To", value: "hospitalDonatedTo" },
         { text: "Action", value: "h" }
       ],
-      desserts: [
-        {
-          name: "Jama Mohamed",
-          noOfDonations: 1,
-          lastDonated: "24 Aug 2019",
-          placeOfDonation: "Nairobi, South B",
-          hospitalDonatedTo: "South B Hospital"
-        },
-        {
-          name: "John Doe",
-          noOfDonations: 2,
-          lastDonated: "16 Aug 2019",
-          placeOfDonation: "Nairobi, South C",
-          hospitalDonatedTo: "South C Hospital"
-        }
-      ]
     };
   },
   methods: {
     viewProfile(value) {}
+  },
+  computed: {
+    donorDetails() {
+      return this.$store.state.hospitalModule.donationDetails
+    }
+  },
+  mounted() {
+    this.$store.dispatch("hospitalModule/getDonorDetails")
   }
 };
 </script>

@@ -9,6 +9,7 @@ export default {
   state: {
     requests: [],
     events: [],
+    donationDetails: [],
     addButton: {
       type: 1,
       name: "Add Request"
@@ -128,6 +129,10 @@ export default {
         .ref("events")
         .orderByChild("uid")
         .equalTo(uid))
+    }),
+    getDonorDetails: firebaseAction(({ bindFirebaseRef }) => {
+      return bindFirebaseRef('donationDetails', database()
+        .ref("donationDetails"))
     }),
     async addRequest({ commit, getters }, payload) {
       try {
@@ -265,9 +270,6 @@ export default {
         commit("buttonLoading", false, { root: true })
         commit("showCloseEventDialog", false)
       }
-    },
-    changeLoc() {
-
     }
   }
 }
