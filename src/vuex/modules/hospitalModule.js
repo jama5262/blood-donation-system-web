@@ -40,7 +40,7 @@ export default {
       state.eventMap = L.map("eventMap")
       navigator.geolocation.getCurrentPosition(location => {
         state.eventMap.setView([location.coords.latitude, location.coords.longitude], 12);
-        L.circle([location.coords.latitude, location.coords.longitude], { radius: 5000 }).addTo(state.eventMap);
+        L.circle([location.coords.latitude, location.coords.longitude], { radius: 300 }).addTo(state.eventMap);
         L.tileLayer(
           "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
           {
@@ -54,11 +54,11 @@ export default {
     changeLocation(state, payload) {
       state.eventMap.setView([payload.lat, payload.lng], 12)
       const icon = L.icon({
-          iconUrl: require('../../assets/marker.png'),
-          iconSize: [40, 40],
-          iconAnchor: [22, 94],
-          popupAnchor: [-3, -90]
-        })
+        iconUrl: require('../../assets/marker.png'),
+        iconSize: [40, 40],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -90]
+      })
       L.marker([payload.lat, payload.lng], { icon: icon })
         .addTo(state.eventMap)
         .bindPopup(payload.eventName)
