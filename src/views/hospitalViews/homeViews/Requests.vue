@@ -24,7 +24,7 @@ export default {
       return this.$store.getters["hospitalModule/getPastRequest"];
     }
   },
-  created() {
+  mounted() {
     setTimeout(() => {
       this.$store.dispatch("hospitalModule/getRequests");
     }, 1000);

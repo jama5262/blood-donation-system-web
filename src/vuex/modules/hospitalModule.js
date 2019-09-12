@@ -34,7 +34,8 @@ export default {
         showDialog: false
       },
       donorDetailsDialog: {
-        showDialog: true
+        showDialog: false,
+        donorProfile: {}
       }
     },
     eventMap: null
@@ -100,6 +101,9 @@ export default {
     showDonorDetailDialog(state, showDialog) {
       state.dialogs.donorDetailsDialog.showDialog = showDialog
     },
+    setDonorProfile(state, payload) {
+      state.dialogs.donorDetailsDialog.donorProfile = { ...payload }
+    },
   },
   getters: {
     getRequestDetails(_state, _getter, rootState) {
@@ -140,6 +144,27 @@ export default {
       return bindFirebaseRef('donationDetails', database()
         .ref("donationDetails"))
     }),
+    async getDonorProfile({ commit }, payload) {
+      try {
+        commit("setAlertMessage", {
+          showAlert: false,
+          message: "",
+        })
+        const snapshot = await database().ref(`donors/${ payload.uid }`).once("value")
+        commit("setDonorProfile", {
+          ...payload,
+          ...snapshot.val()
+        });
+        commit("showDonorDetailDialog", true);
+      } catch (error) {
+        commit("setAlertMessage", {
+          showAlert: true,
+          message: "Error getting donor profile, please try again",
+          type: "error"
+        })
+        return Promise.reject()
+      }
+    },
     async addRequest({ commit, getters }, payload) {
       try {
         commit("setAlertMessage", {

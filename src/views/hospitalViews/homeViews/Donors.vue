@@ -19,7 +19,7 @@
                   <td>{{ item.lastDonated }}</td>
                   <td>{{ item.hname }}</td>
                   <td>
-                    <v-btn small text color="primary">View More</v-btn>
+                    <v-btn @click="viewProfile(item)" small text color="primary">View More</v-btn>
                   </td>
                 </tr>
               </tbody>
@@ -43,12 +43,14 @@ export default {
         { text: "No. of Donations", value: "noOfDonations", align: "left" },
         { text: "Last Donated", value: "lastDonated", align: "left" },
         { text: "Hospital Donated To", value: "hospitalDonatedTo" },
-        { text: "Action", value: "h" }
+        { text: "Action" }
       ]
     };
   },
   methods: {
-    viewProfile(value) {}
+    viewProfile(value) {
+      this.$store.dispatch("hospitalModule/getDonorProfile", value)
+    }
   },
   computed: {
     donorDetails() {
