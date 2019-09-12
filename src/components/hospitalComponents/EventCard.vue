@@ -2,7 +2,7 @@
   <v-container>
     <v-row v-for="n in data" :key="n.key" justify="center" align="center">
       <v-col md="8" class="pb-0">
-        <v-card>
+        <v-card @click="changeLocation(n)">
           <v-row>
             <v-col class="py-0">
               <v-img
@@ -105,6 +105,10 @@ export default {
     },
     closeEvent(key) {
       this.$store.dispatch("hospitalModule/closeEvent", key);
+    },
+    changeLocation(value) {
+      const {lat, lng, eventName } = value
+      this.$store.commit("hospitalModule/changeLocation", { lat, lng, eventName })
     }
   },
   computed: {

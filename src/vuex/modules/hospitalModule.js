@@ -1,5 +1,6 @@
 import { auth, database, storage } from "firebase";
 import { GeoFire } from "geofire";
+import L from 'leaflet';
 import moment from "moment";
 import { firebaseAction } from 'vuexfire';
 
@@ -31,9 +32,38 @@ export default {
       closeEventDialog: {
         showDialog: false
       }
-    }
+    },
+    eventMap: null
   },
   mutations: {
+    initalizeEventMap(state) {
+      state.eventMap = L.map("eventMap")
+      navigator.geolocation.getCurrentPosition(location => {
+        state.eventMap.setView([location.coords.latitude, location.coords.longitude], 12);
+        L.circle([location.coords.latitude, location.coords.longitude], { radius: 5000 }).addTo(state.eventMap);
+        L.tileLayer(
+          "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+          {
+            attribution:
+              'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            maxZoom: 18,
+          }
+        ).addTo(state.eventMap);
+      });
+    },
+    changeLocation(state, payload) {
+      state.eventMap.setView([payload.lat, payload.lng], 12)
+      const icon = L.icon({
+          iconUrl: require('../../assets/marker.png'),
+          iconSize: [40, 40],
+          iconAnchor: [22, 94],
+          popupAnchor: [-3, -90]
+        })
+      L.marker([payload.lat, payload.lng], { icon: icon })
+        .addTo(state.eventMap)
+        .bindPopup(payload.eventName)
+        .openPopup();
+    },
     changeAddButton(state, payload) {
       state.addButton.type = payload
       if (payload === 1) {
@@ -182,7 +212,7 @@ export default {
         const eventRef = database().ref("events")
         const key = eventRef.push().key
         const imageExtension = image.name.slice(image.name.lastIndexOf("."))
-        const snapshot = await storage().ref(`Hospital/${ uid }/events/${ key }.${ imageExtension }`).put(image)
+        const snapshot = await storage().ref(`Hospital/${uid}/events/${key}.${imageExtension}`).put(image)
         const imageUrl = await snapshot.ref.getDownloadURL()
         await eventRef.child(key).set({
           hname,
@@ -236,5 +266,8 @@ export default {
         commit("showCloseEventDialog", false)
       }
     },
+    changeLoc() {
+
+    }
   }
 }

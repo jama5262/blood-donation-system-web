@@ -1,9 +1,10 @@
-import { auth, database, storage } from "firebase/app"
-import Vue from 'vue'
-import Vuex from 'vuex'
-import { vuexfireMutations } from 'vuexfire'
-import HospitalModule from "./modules/hospitalModule"
-
+import { auth, database, storage } from "firebase/app";
+import L from 'leaflet';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import Vue from 'vue';
+import Vuex from 'vuex';
+import { vuexfireMutations } from 'vuexfire';
+import HospitalModule from "./modules/hospitalModule";
 
 Vue.use(Vuex)
 
@@ -14,6 +15,11 @@ export default new Vuex.Store({
   state: {
     userDetails: {},
     locationDetails: {},
+    authMap: null,
+    chosenLocation: {
+      label: "No location chosen",
+      type: "warning"
+    },
     buttonLoading: false,
     alert: {
       message: "",
@@ -23,6 +29,54 @@ export default new Vuex.Store({
     showDialogMap: false
   },
   mutations: {
+    initializeAuthMap(state) {
+      if (state.authMap) return
+      state.authMap = L.map("authMap")
+      navigator.geolocation.getCurrentPosition(location => {
+        state.authMap.setView([location.coords.latitude, location.coords.longitude], 12);
+        const addMarker = ({ x, y }) => {
+          const icon = L.icon({
+            iconUrl: require('../assets/marker.png'),
+            iconSize: [40, 40],
+            iconAnchor: [22, 94],
+            popupAnchor: [-3, -90]
+          })
+          L.marker([y, x], { icon: icon })
+            .addTo(state.authMap)
+        }
+        const provider = new OpenStreetMapProvider();
+        const searchControl = new GeoSearchControl({
+          provider: provider,
+          showMarker: true,
+          marker: {
+            icon: new L.Icon.Default(),
+            draggable: false,
+          },
+          autoClose: true,
+          retainZoomLevel: true,
+          popupFormat: ({ result }) => {
+            addMarker(result)
+            state.chosenLocation.label = result.label
+            state.chosenLocation.type = "success"
+            state.locationDetails = { ...result }
+            setTimeout(() => {
+              state.showDialogMap = false
+              state.locationDetails = result
+            }, 2000);
+          },
+        });
+        state.authMap.addControl(searchControl);
+        L.circle([location.coords.latitude, location.coords.longitude], { radius: 5000 }).addTo(state.authMap);
+        L.tileLayer(
+          "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+          {
+            attribution:
+              'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            maxZoom: 18,
+          }
+        ).addTo(state.authMap);
+      });
+    },
     setUserDetails(state, payload) {
       state.userDetails = { ...state.userDetails, ...payload }
     },

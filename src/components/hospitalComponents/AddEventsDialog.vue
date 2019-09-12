@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import DialogMap from "../alertComponents/DialogMap";
+import DialogMap from "../mainComponents/DialogMap";
 import Alert from "../../components/hospitalComponents/Alert";
 export default {
   data() {
