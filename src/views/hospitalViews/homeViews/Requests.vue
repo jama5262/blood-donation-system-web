@@ -1,5 +1,4 @@
 <template>
-  <div>
     <v-tabs grow>
       <v-tab>Active Requests</v-tab>
       <v-tab>Past Requests</v-tab>
@@ -11,11 +10,9 @@
         <RequestCard :data="pastRequests" />
       </v-tab-item>
     </v-tabs>
-  </div>
 </template>
 
 <script>
-import { auth, database } from "firebase";
 import RequestCard from "../../../components/hospitalComponents/RequestCard";
 
 export default {

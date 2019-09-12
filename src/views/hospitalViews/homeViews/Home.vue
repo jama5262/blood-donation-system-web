@@ -1,8 +1,10 @@
 <template>
   <div style="height: 100%">
     <Appbar />
+    <Alert />
     <VerticalTab />
     <AddRequestDialog />
+    <AddEventsDialog />
   </div>
 </template>
 
@@ -10,12 +12,16 @@
 import Appbar from "../../../components/hospitalComponents/Appbar";
 import VerticalTab from "../../../components/hospitalComponents/VerticalTab";
 import AddRequestDialog from "../../../components/hospitalComponents/AddRequestDialog";
+import AddEventsDialog from "../../../components/hospitalComponents/AddEventsDialog";
+import Alert from "../../../components/hospitalComponents/Alert";
 
 export default {
   components: {
     Appbar,
     VerticalTab,
-    AddRequestDialog
+    AddRequestDialog,
+    AddEventsDialog,
+    Alert
   }
 };
 </script>

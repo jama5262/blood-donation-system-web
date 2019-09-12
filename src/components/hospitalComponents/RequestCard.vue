@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row v-for="n in data" :key="n.uid" justify="center" align="center">
+    <v-row v-for="n in data" :key="n.key" justify="center" align="center">
       <v-col class="date-container" md="1">
         <span class="date font-weight-bold">20</span>
         <br />
@@ -59,7 +59,7 @@
                             @click="closeRequest(n.key)"
                             color="primary"
                             text
-                          >Close</v-btn>
+                          >Close Request</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -77,11 +77,6 @@
 <script>
 export default {
   props: ["data"],
-  data() {
-    return {
-      j: this.data
-    };
-  },
   methods: {
     closeDialog() {
       this.$store.commit("hospitalModule/showCloseRequestDialog", false);

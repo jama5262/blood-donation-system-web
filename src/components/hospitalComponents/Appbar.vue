@@ -48,7 +48,7 @@ export default {
       if (this.addButton.type === 1) {
         this.$store.commit("hospitalModule/showAddRequestDialog", true)
       } else if (this.addButton.type === 2) {
-        this.$store.commit("hospitalModule/showAddRequestDialog", true)
+        this.$store.commit("hospitalModule/showAddEventDialog", true)
       }
     }
   },
