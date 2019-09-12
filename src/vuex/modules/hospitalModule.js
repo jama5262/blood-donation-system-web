@@ -32,6 +32,9 @@ export default {
       },
       closeEventDialog: {
         showDialog: false
+      },
+      donorDetailsDialog: {
+        showDialog: true
       }
     },
     eventMap: null
@@ -93,6 +96,9 @@ export default {
       state.alert.message = payload.message || ""
       state.alert.type = payload.type || "success"
       state.alert.dismissible = payload.dismissible || true
+    },
+    showDonorDetailDialog(state, showDialog) {
+      state.dialogs.donorDetailsDialog.showDialog = showDialog
     },
   },
   getters: {

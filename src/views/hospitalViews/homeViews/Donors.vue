@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <DonorDetailDialog />
     <v-row>
       <v-col>
         <v-card>
@@ -31,22 +32,19 @@
 </template>
 
 <script>
+import DonorDetailDialog from "../../../components/hospitalComponents/DonorDetailsDialog"
+
 export default {
   data() {
     return {
       headers: [
-        {
-          text: "Name",
-          align: "left",
-          sortable: false,
-          value: "name"
-        },
+        { text: "Name", align: "left", sortable: false, value: "name" },
         { text: "National ID", value: "nationalID", align: "left" },
         { text: "No. of Donations", value: "noOfDonations", align: "left" },
         { text: "Last Donated", value: "lastDonated", align: "left" },
         { text: "Hospital Donated To", value: "hospitalDonatedTo" },
         { text: "Action", value: "h" }
-      ],
+      ]
     };
   },
   methods: {
@@ -54,11 +52,14 @@ export default {
   },
   computed: {
     donorDetails() {
-      return this.$store.state.hospitalModule.donationDetails
+      return this.$store.state.hospitalModule.donationDetails;
     }
   },
   mounted() {
-    this.$store.dispatch("hospitalModule/getDonorDetails")
+    this.$store.dispatch("hospitalModule/getDonorDetails");
+  },
+  components: {
+    DonorDetailDialog
   }
 };
 </script>
