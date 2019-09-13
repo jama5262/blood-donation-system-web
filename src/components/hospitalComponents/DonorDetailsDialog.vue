@@ -100,13 +100,18 @@ export default {
         this.$store.commit("hospitalModule/showDonorDetailDialog", value);
       }
     }
+  },
+  updated() {
+    this.$store.commit("hospitalModule/initalizeDonorProfileMap");
+    this.$store.commit("hospitalModule/changeDonorDetailsLocation", { payload: this.donorProfile.latlng });
+    console.log(this.donorProfile);
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .name {
-  font-size: 1.2rem !important;
+  font-size: 1.5rem !important;
   font-weight: 400;
   letter-spacing: 0.0073529412em !important;
 }
@@ -129,6 +134,7 @@ export default {
   padding: 15px 30px
 }
 #donorProfileMap {
-  height: 300px;
+  height: 200px;
+  border-radius: 10px;
 }
 </style>

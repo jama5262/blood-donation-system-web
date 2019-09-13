@@ -57,7 +57,7 @@ export default {
         ).addTo(state.eventMap);
       });
     },
-    changeLocation(state, payload) {
+    changeEventLocation(state, payload) {
       state.eventMap.setView([payload.lat, payload.lng], 12)
       const icon = L.icon({
         iconUrl: require('../../assets/marker.png'),
@@ -70,17 +70,28 @@ export default {
         .bindPopup(payload.eventName)
         .openPopup();
     },
-    initalizeDonorProfileMap(state, payload) {
+    initalizeDonorProfileMap(state) {
+      if (state.donorProfileMap) return
       state.donorProfileMap = L.map("donorProfileMap")
-      state.donorProfileMap.setView([51.505, -0.09], 12);
-      // const icon = L.icon({
-      //   iconUrl: require('../../assets/marker.png'),
-      //   iconSize: [40, 40],
-      //   iconAnchor: [22, 94],
-      //   popupAnchor: [-3, -90]
-      // })
-      // L.marker([y, x], { icon: icon })
-      //   .addTo(state.donorProfileMap)
+      L.tileLayer(
+        "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+          maxZoom: 18,
+        }
+      ).addTo(state.donorProfileMap);
+    },
+    changeDonorDetailsLocation(state, payload) {
+      state.donorProfileMap.setView([parseFloat(payload.payload.lat), parseFloat(payload.payload.lng)], 15);
+      const icon = L.icon({
+        iconUrl: require('../../assets/marker.png'),
+        iconSize: [40, 40],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -90]
+      })
+      L.marker([parseFloat(payload.payload.lat), parseFloat(payload.payload.lng)], { icon: icon })
+        .addTo(state.donorProfileMap)
     },
     changeAddButton(state, payload) {
       state.addButton.type = payload
@@ -168,7 +179,6 @@ export default {
           ...payload,
           ...snapshot.val()
         });
-        commit("initalizeDonorProfileMap", { payload: snapshot.val().latlng });
         commit("showDonorDetailDialog", true);
       } catch (error) {
         console.log(error);
@@ -178,7 +188,6 @@ export default {
           message: "Error getting donor profile, please try again",
           type: "error"
         })
-        return Promise.reject()
       }
     },
     async addRequest({ commit, getters }, payload) {

@@ -9,7 +9,7 @@ export default {};
 </script>
 
 <style scoped>
-* {
+.v-application {
   font-family: "Montserrat", sans-serif;
 }
 </style>

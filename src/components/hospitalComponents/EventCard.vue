@@ -108,7 +108,7 @@ export default {
     },
     changeLocation(value) {
       const {lat, lng, eventName } = value
-      this.$store.commit("hospitalModule/changeLocation", { lat, lng, eventName })
+      this.$store.commit("hospitalModule/changeEventLocation", { lat, lng, eventName })
     }
   },
   computed: {
