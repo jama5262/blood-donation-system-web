@@ -6,7 +6,7 @@
 
     <v-btn @click="showDialogs" text>{{ addButton.name }}</v-btn>
 
-    <v-btn icon>
+    <v-btn @click="showQRCode" icon>
       <v-icon>mdi-qrcode</v-icon>
     </v-btn>
 
@@ -39,6 +39,9 @@ export default {
     }
   },
   methods: {
+    showQRCode() {
+      this.$store.commit("hospitalModule/showqrCodeDialog", true)
+    },
     menuMethod(value) {
       if (value === 1) {
         this.$store.dispatch("firebaseSignOut")

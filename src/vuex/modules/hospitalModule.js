@@ -36,6 +36,9 @@ export default {
       donorDetailsDialog: {
         showDialog: false,
         donorProfile: {}
+      },
+      qrCodeDialog: {
+        showDialog: false,
       }
     },
     eventMap: null,
@@ -128,6 +131,10 @@ export default {
     setDonorProfile(state, payload) {
       state.dialogs.donorDetailsDialog.donorProfile = { ...payload }
     },
+    showqrCodeDialog(state, showDialog) {
+      state.dialogs.qrCodeDialog.showDialog = showDialog
+    },
+    
   },
   getters: {
     getRequestDetails(_state, _getter, rootState) {
@@ -326,6 +333,6 @@ export default {
         commit("buttonLoading", false, { root: true })
         commit("showCloseEventDialog", false)
       }
-    }
+    },
   }
 }

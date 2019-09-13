@@ -3,6 +3,7 @@
     <Appbar />
     <Alert />
     <VerticalTab />
+    <QRCodeDialog />
     <AddRequestDialog />
     <AddEventsDialog />
   </div>
@@ -14,6 +15,7 @@ import VerticalTab from "../../../components/hospitalComponents/VerticalTab";
 import AddRequestDialog from "../../../components/hospitalComponents/AddRequestDialog";
 import AddEventsDialog from "../../../components/hospitalComponents/AddEventsDialog";
 import Alert from "../../../components/hospitalComponents/Alert";
+import QRCodeDialog from "../../../components/hospitalComponents/QRCodeDialog";
 
 export default {
   components: {
@@ -21,7 +23,8 @@ export default {
     VerticalTab,
     AddRequestDialog,
     AddEventsDialog,
-    Alert
+    Alert,
+    QRCodeDialog
   }
 };
 </script>
