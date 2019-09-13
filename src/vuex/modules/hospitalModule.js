@@ -9,6 +9,7 @@ export default {
   state: {
     requests: [],
     events: [],
+    donationDetails: [],
     addButton: {
       type: 1,
       name: "Add Request"
@@ -31,16 +32,21 @@ export default {
       },
       closeEventDialog: {
         showDialog: false
+      },
+      donorDetailsDialog: {
+        showDialog: false,
+        donorProfile: {}
       }
     },
-    eventMap: null
+    eventMap: null,
+    donorProfileMap: null
   },
   mutations: {
     initalizeEventMap(state) {
       state.eventMap = L.map("eventMap")
       navigator.geolocation.getCurrentPosition(location => {
         state.eventMap.setView([location.coords.latitude, location.coords.longitude], 12);
-        L.circle([location.coords.latitude, location.coords.longitude], { radius: 5000 }).addTo(state.eventMap);
+        L.circle([location.coords.latitude, location.coords.longitude], { radius: 300 }).addTo(state.eventMap);
         L.tileLayer(
           "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
           {
@@ -51,18 +57,41 @@ export default {
         ).addTo(state.eventMap);
       });
     },
-    changeLocation(state, payload) {
+    changeEventLocation(state, payload) {
       state.eventMap.setView([payload.lat, payload.lng], 12)
       const icon = L.icon({
-          iconUrl: require('../../assets/marker.png'),
-          iconSize: [40, 40],
-          iconAnchor: [22, 94],
-          popupAnchor: [-3, -90]
-        })
+        iconUrl: require('../../assets/marker.png'),
+        iconSize: [40, 40],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -90]
+      })
       L.marker([payload.lat, payload.lng], { icon: icon })
         .addTo(state.eventMap)
         .bindPopup(payload.eventName)
         .openPopup();
+    },
+    initalizeDonorProfileMap(state) {
+      if (state.donorProfileMap) return
+      state.donorProfileMap = L.map("donorProfileMap")
+      L.tileLayer(
+        "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+          maxZoom: 18,
+        }
+      ).addTo(state.donorProfileMap);
+    },
+    changeDonorDetailsLocation(state, payload) {
+      state.donorProfileMap.setView([parseFloat(payload.payload.lat), parseFloat(payload.payload.lng)], 15);
+      const icon = L.icon({
+        iconUrl: require('../../assets/marker.png'),
+        iconSize: [40, 40],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -90]
+      })
+      L.marker([parseFloat(payload.payload.lat), parseFloat(payload.payload.lng)], { icon: icon })
+        .addTo(state.donorProfileMap)
     },
     changeAddButton(state, payload) {
       state.addButton.type = payload
@@ -92,6 +121,12 @@ export default {
       state.alert.message = payload.message || ""
       state.alert.type = payload.type || "success"
       state.alert.dismissible = payload.dismissible || true
+    },
+    showDonorDetailDialog(state, showDialog) {
+      state.dialogs.donorDetailsDialog.showDialog = showDialog
+    },
+    setDonorProfile(state, payload) {
+      state.dialogs.donorDetailsDialog.donorProfile = { ...payload }
     },
   },
   getters: {
@@ -129,6 +164,32 @@ export default {
         .orderByChild("uid")
         .equalTo(uid))
     }),
+    getDonorDetails: firebaseAction(({ bindFirebaseRef }) => {
+      return bindFirebaseRef('donationDetails', database()
+        .ref("donationDetails"))
+    }),
+    async getDonorProfile({ commit }, payload) {
+      try {
+        commit("setAlertMessage", {
+          showAlert: false,
+          message: "",
+        })
+        const snapshot = await database().ref(`donors/${ payload.uid }`).once("value")
+        commit("setDonorProfile", {
+          ...payload,
+          ...snapshot.val()
+        });
+        commit("showDonorDetailDialog", true);
+      } catch (error) {
+        console.log(error);
+        
+        commit("setAlertMessage", {
+          showAlert: true,
+          message: "Error getting donor profile, please try again",
+          type: "error"
+        })
+      }
+    },
     async addRequest({ commit, getters }, payload) {
       try {
         commit("setAlertMessage", {
@@ -265,9 +326,6 @@ export default {
         commit("buttonLoading", false, { root: true })
         commit("showCloseEventDialog", false)
       }
-    },
-    changeLoc() {
-
     }
   }
 }

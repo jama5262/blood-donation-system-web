@@ -33,6 +33,13 @@ new Vue({
             emailVerified,
             uid
           })
+          if (!emailVerified) {
+            this.$store.commit("hospitalModule/setAlertMessage", {
+              showAlert: true,
+              message: "An email verification link has been sent to your email address, please verify account",
+              type: "warning",
+            })
+          }
           console.log("user exists");
           const snapshot = await database().ref(`users/${uid}`).once("value")
           store.commit("setUserDetails", {

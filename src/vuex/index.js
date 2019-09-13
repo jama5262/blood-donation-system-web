@@ -161,6 +161,7 @@ export default new Vuex.Store({
           throw "Please set the location of the hospital"
         }
         await auth().createUserWithEmailAndPassword(email, password)
+        await auth().currentUser.sendEmailVerification()
         const uid = auth().currentUser.uid
         const imageExtension = image.name.slice(image.name.lastIndexOf("."))
         const snapshot = await storage().ref("Hospital/" + uid + "/profileImage/" + "image." + imageExtension).put(image)

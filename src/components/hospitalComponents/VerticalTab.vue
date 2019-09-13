@@ -6,7 +6,9 @@
     <v-tab-item>
       <Requests />
     </v-tab-item>
-    <v-tab-item>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dicta vero quibusdam maxime fuga impedit! Pariatur aliquid nemo quis voluptatum, consequuntur fugiat tempore nostrum. Delectus fugiat velit aspernatur autem in nobis.</v-tab-item>
+    <v-tab-item>
+      <Donors />
+    </v-tab-item>
     <v-tab-item>
       <Events />
     </v-tab-item>
@@ -16,6 +18,7 @@
 <script>
 import Requests from "../../views/hospitalViews/homeViews/Requests";
 import Events from "../../views/hospitalViews/homeViews/Events";
+import Donors from "../../views/hospitalViews/homeViews/Donors";
 
 export default {
   methods: {
@@ -26,6 +29,7 @@ export default {
   components: {
     Requests,
     Events,
+    Donors
   }
 };
 </script>
