@@ -1,5 +1,5 @@
 <template>
-  <v-tabs vertical dark background-color="primary" style="height: inherit">
+  <v-tabs vertical dark background-color="primary">
     <v-tab @click="changedTab(1)">Requests</v-tab>
     <v-tab @click="changedTab(1)">Donors</v-tab>
     <v-tab @click="changedTab(2)">Events</v-tab>
@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import Requests from "../../views/hospitalViews/homeViews/Requests";
-import Events from "../../views/hospitalViews/homeViews/Events";
-import Donors from "../../views/hospitalViews/homeViews/Donors";
+import Requests from "../../../views/hospitalViews/homeViews/Requests";
+import Events from "../../../views/hospitalViews/homeViews/Events";
+import Donors from "../../../views/hospitalViews/homeViews/Donors";
 
 export default {
   methods: {
@@ -35,4 +35,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-tabs {
+  height: inherit;
+}
 </style>

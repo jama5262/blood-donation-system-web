@@ -1,17 +1,11 @@
 <template>
-  <v-container>
+  <v-container class="pb-0">
     <v-row v-for="n in data" :key="n.key" justify="center" align="center">
       <v-col md="8" class="pb-0">
         <v-card @click="changeLocation(n)">
           <v-row>
             <v-col class="py-0">
-              <v-img
-                style="border-top-left-radius: 10px; border-top-right-radius: 10px"
-                :src="n.imageUrl"
-                aspect-ratio="1"
-                class="grey lighten-2"
-                height="150px"
-              ></v-img>
+              <v-img :src="n.imageUrl" aspect-ratio="1" class="grey lighten-2" height="150px"></v-img>
             </v-col>
           </v-row>
           <v-row>
@@ -20,32 +14,32 @@
               <br />
               <span class="location font-weight-bold">{{ n.place }}</span>
               <br />
-              <span class="location font-weight-bold">{{ n.date }}</span>
+              <span class="date font-weight-bold">{{ n.date }}</span>
             </v-col>
           </v-row>
           <v-row>
-            <v-col class="exp-container">
-              <v-expansion-panels class="exp-container" style="border-radius: 10px">
+            <v-col class="py-0">
+              <v-expansion-panels>
                 <v-expansion-panel>
                   <v-expansion-panel-header>
-                    <span style="text-align: left" class="primary--text">VIEW MORE</span>
+                    <span class="primary--text">VIEW MORE</span>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
                     <v-row>
                       <v-col class="pt-0">
-                        <span class="location">Created On</span>
+                        <span class="reference">Created On</span>
                         <br />
                         <span class="font-weight-bold">{{ n.createdOn }}</span>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col class="pt-0">
-                        <span class="location">Start Time</span>
+                        <span class="reference">Start Time</span>
                         <br />
                         <span class="font-weight-bold">{{ n.startTime }}</span>
                       </v-col>
                       <v-col class="pt-0">
-                        <span class="location">End Time</span>
+                        <span class="reference">End Time</span>
                         <br />
                         <span class="font-weight-bold">{{ n.endTime }}</span>
                       </v-col>
@@ -58,7 +52,7 @@
                     </v-row>
                     <v-row>
                       <v-col class="pt-0">
-                        <span class="location">Description</span>
+                        <span class="reference">Description</span>
                         <br />
                         <span class="font-weight-bold">{{ n.eventDescription }}</span>
                       </v-col>
@@ -107,8 +101,12 @@ export default {
       this.$store.dispatch("hospitalModule/closeEvent", key);
     },
     changeLocation(value) {
-      const {lat, lng, eventName } = value
-      this.$store.commit("hospitalModule/changeEventLocation", { lat, lng, eventName })
+      const { lat, lng, eventName } = value;
+      this.$store.commit("hospitalModule/changeEventLocation", {
+        lat,
+        lng,
+        eventName
+      });
     }
   },
   computed: {
@@ -132,15 +130,19 @@ export default {
 .v-card {
   border-radius: 10px;
 }
-.container {
-  padding-bottom: 0;
+.v-image {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.v-expansion-panels {
+  border-radius: 10px
 }
 .eventName {
   font-size: 1.2rem !important;
   font-weight: 400;
   letter-spacing: 0.0073529412em !important;
 }
-.location {
+.location, .reference, .date {
   font-size: 0.725rem !important;
 }
 .viewed {
@@ -148,9 +150,5 @@ export default {
   font-weight: 400;
   line-height: 2.5rem;
   letter-spacing: 0.0073529412em !important;
-}
-.exp-container {
-  padding-bottom: 0;
-  padding-top: 0;
 }
 </style>

@@ -2,8 +2,7 @@
   <v-dialog v-model="showDialog" width="500">
     <v-card>
       <v-card-title class="font-weight-bold" primary-title>Add Request</v-card-title>
-
-      <v-form v-model="valid">
+      <v-form class="px-7 pt-4 pb-0" v-model="valid">
         <v-text-field
           outlined
           :rules="rules.recepient"
@@ -37,7 +36,6 @@
           required
         ></v-textarea>
       </v-form>
-
       <v-card-actions>
         <div class="flex-grow-1"></div>
         <v-btn color="primary" text @click="closeDialog">Cancel</v-btn>
@@ -97,9 +95,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.v-form {
-  padding: 10px 30px 0 30px;
-}
-</style>

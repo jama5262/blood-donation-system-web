@@ -13,31 +13,24 @@
       </v-tabs>
     </v-col>
     <v-col>
-      <div id="eventMap"></div>
+      <div class="ma-4" id="eventMap"></div>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import EventCard from "../../../components/hospitalComponents/EventCard";
+import EventCard from "../../../components/hospitalComponents/cards/EventCard";
 export default {
-  data() {
-    return {};
-  },
   computed: {
     activeEvents() {
-      return this.$store.getters["hospitalModule/getActiveEvents"];
+      return this.$store.getters["hospitalModule/getActivePastEvents"](true);
     },
     pastEvents() {
-      return this.$store.getters["hospitalModule/getPastEvent"];
+      return this.$store.getters["hospitalModule/getActivePastEvents"](false);
     }
   },
-  created() {
-    setTimeout(() => {
-      this.$store.dispatch("hospitalModule/getEvents");
-    }, 1000);
-  },
   mounted() {
+    this.$store.dispatch("hospitalModule/getEvents");
     this.$store.commit("hospitalModule/initalizeEventMap");
   },
   components: {
@@ -54,6 +47,5 @@ export default {
   z-index: 0;
   height: 500px;
   border-radius: 10px;
-  margin: 10px;
 }
 </style>

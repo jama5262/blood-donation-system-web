@@ -2,8 +2,7 @@
   <v-dialog v-model="showDialog" width="500">
     <v-card>
       <v-card-title class="font-weight-bold" primary-title>Add Event</v-card-title>
-
-      <v-form v-model="valid">
+      <v-form class="px-7 pt-4 pb-0" v-model="valid">
         <Alert />
         <v-img
           v-if="imageUrl"
@@ -11,9 +10,8 @@
           aspect-ratio="1"
           class="grey lighten-2"
           height="150px"
-          style="border-radius: 10px; margin-bottom: 15px"
         ></v-img>
-        <v-btn @click="pickFile" style="margin-bottom: 10px" color="primary" rounded>
+        <v-btn @click="pickFile" class="mb-4" color="primary" rounded>
           Upload Image
           <v-icon right dark>mdi-cloud-upload</v-icon>
         </v-btn>
@@ -126,7 +124,6 @@
           required
         ></v-textarea>
       </v-form>
-
       <v-card-actions>
         <div class="flex-grow-1"></div>
         <v-btn color="primary" text @click="closeDialog">Cancel</v-btn>
@@ -137,8 +134,8 @@
 </template>
 
 <script>
-import DialogMap from "../mainComponents/DialogMap";
-import Alert from "../../components/hospitalComponents/Alert";
+import DialogMap from "../../mainComponents/dialogs/DialogMap";
+import Alert from "../alerts/Alert";
 export default {
   data() {
     return {
@@ -213,7 +210,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-form {
-  padding: 10px 30px 0 30px;
+.v-image {
+  border-radius: 10px;
+  margin-bottom: 15px;
 }
 </style>

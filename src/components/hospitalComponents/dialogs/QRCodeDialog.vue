@@ -1,8 +1,7 @@
 <template>
   <v-dialog v-model="showDialog" width="500">
     <v-card>
-      <qrcode-vue class="qrcode" :foreground="foreground" :value="value" :size="size" level="H"></qrcode-vue>
-
+      <qrcode-vue class="qrcode pa-10" :foreground="foreground" :value="value" :size="size" level="H"></qrcode-vue>
       <v-card-actions>
         <div class="flex-grow-1"></div>
         <v-btn color="primary" text @click="closeDialog">Close</v-btn>
@@ -19,7 +18,7 @@ export default {
     return {
       size: 400,
       foreground: "#D32F2F"
-    }
+    };
   },
   methods: {
     closeDialog() {
@@ -28,7 +27,7 @@ export default {
   },
   computed: {
     value() {
-      return this.$store.state.userDetails.uid
+      return this.$store.state.userDetails.uid;
     },
     showDialog: {
       get() {
@@ -46,7 +45,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.qrcode {
-  padding: 50px
-}
 </style>

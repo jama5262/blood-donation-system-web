@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <DonorDetailDialog />
-    <v-row>
-      <v-col>
+    <div class="d-flex flex-row">
+      <div>
         <v-card>
           <v-card-title>
             <div class="flex-grow-1"></div>
@@ -38,20 +38,19 @@
             </template>
           </v-data-table>
         </v-card>
-      </v-col>
-    </v-row>
+      </div>
+    </div>
   </v-container>
 </template>
 
 <script>
-import DonorDetailDialog from "../../../components/hospitalComponents/DonorDetailsDialog";
-
+import DonorDetailDialog from "../../../components/hospitalComponents/dialogs/DonorDetailsDialog";
 export default {
   data() {
     return {
       search: "",
       headers: [
-        { text: "Name", align: "left", sortable: false, value: "fullName" },
+        { text: "Name", align: "left", value: "fullName" },
         { text: "National ID", value: "nationalId", align: "left" },
         { text: "Blood Type", value: "bloodType", align: "left" },
         { text: "No. of Donations", value: "noOfDonations", align: "left" },

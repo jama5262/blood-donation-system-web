@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="showDialogMap" width="700">
     <template v-slot:activator="{ on }">
-      <v-btn style="margin-bottom: 10px" color="primary" rounded v-on="on">
+      <v-btn class="mb-2" color="primary" rounded v-on="on">
         Choose Location
         <v-icon right dark>mdi-map-marker</v-icon>
       </v-btn>

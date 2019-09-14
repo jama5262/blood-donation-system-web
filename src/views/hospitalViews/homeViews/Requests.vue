@@ -1,39 +1,35 @@
 <template>
-    <v-tabs grow>
-      <v-tab>Active Requests</v-tab>
-      <v-tab>Past Requests</v-tab>
-
-      <v-tab-item>
-        <RequestCard :data="activeRequests" />
-      </v-tab-item>
-      <v-tab-item>
-        <RequestCard :data="pastRequests" />
-      </v-tab-item>
-    </v-tabs>
+  <v-tabs grow>
+    <v-tab>Active Requests</v-tab>
+    <v-tab>Past Requests</v-tab>
+    <v-tab-item>
+      <RequestCard :data="activeRequests" />
+    </v-tab-item>
+    <v-tab-item>
+      <RequestCard :data="pastRequests" />
+    </v-tab-item>
+  </v-tabs>
 </template>
 
 <script>
-import RequestCard from "../../../components/hospitalComponents/RequestCard";
+import RequestCard from "../../../components/hospitalComponents/cards/RequestCard";
 
 export default {
   computed: {
     activeRequests() {
-      return this.$store.getters["hospitalModule/getActiveRequest"];
+      return this.$store.getters["hospitalModule/getActivePastRequest"](true);
     },
     pastRequests() {
-      return this.$store.getters["hospitalModule/getPastRequest"];
+      return this.$store.getters["hospitalModule/getActivePastRequest"](false);
     }
   },
   mounted() {
     setTimeout(() => {
       this.$store.dispatch("hospitalModule/getRequests");
-    }, 1000);
+    }, 2000);
   },
   components: {
     RequestCard
   }
 };
 </script>
-
-<style lang="scss" scoped>
-</style>

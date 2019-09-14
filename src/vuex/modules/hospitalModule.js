@@ -42,25 +42,29 @@ export default {
       }
     },
     eventMap: null,
-    donorProfileMap: null
+    donorProfileMap: null,
+    leafletTile: {
+      url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+      maxZoom: 18
+    }
   },
   mutations: {
-    initalizeEventMap(state) {
+    initalizeEventMap: (state) => {
       state.eventMap = L.map("eventMap")
       navigator.geolocation.getCurrentPosition(location => {
         state.eventMap.setView([location.coords.latitude, location.coords.longitude], 12);
         L.circle([location.coords.latitude, location.coords.longitude], { radius: 300 }).addTo(state.eventMap);
         L.tileLayer(
-          "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+          state.leafletTile.url,
           {
-            attribution:
-              'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-            maxZoom: 18,
+            attribution: state.leafletTile.attribution,
+            maxZoom: state.leafletTile.maxZoom,
           }
         ).addTo(state.eventMap);
       });
     },
-    changeEventLocation(state, payload) {
+    changeEventLocation: (state, payload) => {
       state.eventMap.setView([payload.lat, payload.lng], 12)
       const icon = L.icon({
         iconUrl: require('../../assets/marker.png'),
@@ -73,30 +77,29 @@ export default {
         .bindPopup(payload.eventName)
         .openPopup();
     },
-    initalizeDonorProfileMap(state) {
+    initalizeDonorProfileMap: (state) => {
       if (state.donorProfileMap) return
       state.donorProfileMap = L.map("donorProfileMap")
       L.tileLayer(
-        "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+        state.leafletTile.url,
         {
-          attribution:
-            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-          maxZoom: 18,
+          attribution: state.leafletTile.attribution,
+          maxZoom: state.leafletTile.maxZoom,
         }
       ).addTo(state.donorProfileMap);
     },
-    changeDonorDetailsLocation(state, payload) {
-      state.donorProfileMap.setView([parseFloat(payload.payload.lat), parseFloat(payload.payload.lng)], 15);
+    changeDonorDetailsLocation: (state, payload) => {
+      state.donorProfileMap.setView([parseFloat(payload.lat), parseFloat(payload.lng)], 15);
       const icon = L.icon({
         iconUrl: require('../../assets/marker.png'),
         iconSize: [40, 40],
         iconAnchor: [22, 94],
         popupAnchor: [-3, -90]
       })
-      L.marker([parseFloat(payload.payload.lat), parseFloat(payload.payload.lng)], { icon: icon })
+      L.marker([parseFloat(payload.lat), parseFloat(payload.lng)], { icon: icon })
         .addTo(state.donorProfileMap)
     },
-    changeAddButton(state, payload) {
+    changeAddButton: (state, payload) => {
       state.addButton.type = payload
       if (payload === 1) {
         state.addButton.name = "Add Request"
@@ -107,53 +110,62 @@ export default {
         state.addButton.type = 2
       }
     },
-    showAddRequestDialog(state, showDialog) {
+    showAddRequestDialog: (state, showDialog) => {
       state.dialogs.addRequestDailog.showDialog = showDialog
     },
-    showCloseRequestDialog(state, showDialog) {
+    showCloseRequestDialog: (state, showDialog) => {
       state.dialogs.closeRequestDialog.showDialog = showDialog
     },
-    showAddEventDialog(state, showDialog) {
+    showAddEventDialog: (state, showDialog) => {
       state.dialogs.addEventDailog.showDialog = showDialog
     },
-    showCloseEventDialog(state, showDialog) {
+    showCloseEventDialog: (state, showDialog) => {
       state.dialogs.closeEventDialog.showDialog = showDialog
     },
-    setAlertMessage(state, payload) {
+    setAlertMessage: (state, payload) => {
       state.alert.showAlert = payload.showAlert || false
       state.alert.message = payload.message || ""
       state.alert.type = payload.type || "success"
       state.alert.dismissible = payload.dismissible || true
     },
-    showDonorDetailDialog(state, showDialog) {
+    showDonorDetailDialog: (state, showDialog) => {
       state.dialogs.donorDetailsDialog.showDialog = showDialog
     },
-    setDonorProfile(state, payload) {
+    setDonorProfile: (state, payload) => {
       state.dialogs.donorDetailsDialog.donorProfile = { ...payload }
     },
-    showqrCodeDialog(state, showDialog) {
+    showqrCodeDialog: (state, showDialog) => {
       state.dialogs.qrCodeDialog.showDialog = showDialog
     },
     
   },
   getters: {
-    getRequestDetails(_state, _getter, rootState) {
+    getRequestDetails: (_state, _getter, rootState) => {
       return rootState.userDetails
     },
-    getActiveRequest(state) {
-      return state.requests.filter(request => request.active === true).reverse()
+    getActivePastRequest: (state) => (payload) => {
+      return state.requests.filter(request => request.active === payload)
+      .map(request => {
+        request["date"] = {
+          date: moment.unix(request.timestamp).format("Do"),
+          day: moment.unix(request.timestamp).format("ddd"),
+          monthYear: moment.unix(request.timestamp).format("MMM YYYY"),
+        }
+        return request
+      })
+      .reverse()
     },
-    getPastRequest(state) {
-      return state.requests.filter(request => request.active === false).reverse()
+    getActivePastEvents: (state) => (payload) => {
+      return state.events.filter(event => event.active === payload)
+      .map(event => {
+        event["createdOn"] = moment.unix(event.timestamp).format("Do MMM YYYY")
+        event["date"] = moment.unix(event.date).format("Do MMM YYYY")
+        return event
+      })
+      .reverse()
     },
-    getActiveEvents(state) {
-      return state.events.filter(event => event.active === true).reverse()
-    },
-    getPastEvent(state) {
-      return state.events.filter(event => event.active === false).reverse()
-    },
-    getTimestamp() {
-      return moment().unix() * 1000
+    getTimestamp: () => {
+      return moment().unix()
     }
   },
   actions: {
@@ -175,7 +187,7 @@ export default {
       return bindFirebaseRef('donationDetails', database()
         .ref("donationDetails"))
     }),
-    async getDonorProfile({ commit }, payload) {
+    getDonorProfile: async ({ commit }, payload) => {
       try {
         commit("setAlertMessage", {
           showAlert: false,
@@ -197,7 +209,7 @@ export default {
         })
       }
     },
-    async addRequest({ commit, getters }, payload) {
+    addRequest: async ({ commit, getters }, payload) => {
       try {
         commit("setAlertMessage", {
           showAlert: false,
@@ -205,7 +217,7 @@ export default {
         })
         commit("buttonLoading", true, { root: true })
         const { hname, imageUrl, lat, lng, place, uid } = getters.getRequestDetails;
-        const { recepientName, bloodType, gender, requestReason } = payload
+        const { bloodType } = payload
         const requestRef = database().ref("requests")
         const key = requestRef.push().key
         await requestRef.child(key).set({
@@ -214,16 +226,13 @@ export default {
           uid,
           lat,
           lng,
-          requestReason,
-          recepientName,
-          gender,
-          bloodType,
           place,
           accepted: 0,
           viewed: 0,
           active: true,
           key,
-          timestamp: getters.getTimestamp
+          timestamp: getters.getTimestamp,
+          ...payload
         })
         let geofire = new GeoFire(database().ref(`geofire/request/${bloodType}`))
         await geofire.set(key, [parseFloat(lng), parseFloat(lat)])
@@ -239,7 +248,7 @@ export default {
         commit("buttonLoading", false, { root: true })
       }
     },
-    async closeRequest({ commit }, payload) {
+    closeRequest: async ({ commit }, payload) => {
       try {
         commit("setAlertMessage", {
           showAlert: false,
@@ -261,7 +270,7 @@ export default {
         commit("showCloseRequestDialog", false)
       }
     },
-    async addEvent({ commit, getters, rootGetters }, payload) {
+    addEvent: async ({ commit, getters, rootGetters }, payload) => {
       try {
         commit("setAlertMessage", {
           showAlert: false,
@@ -275,8 +284,7 @@ export default {
         } else if (image === null) {
           throw "Please add a photo of the event"
         }
-        const momentDate = moment(date, "YYYY-MM-DD").format("Do MMM YYYY")
-        const createdOn = moment().format("hh:mm a, Do MMM YYYY")
+        const momentDate = moment(date, "YYYY-MM-DD").valueOf() / 1000
         const eventRef = database().ref("events")
         const key = eventRef.push().key
         const imageExtension = image.name.slice(image.name.lastIndexOf("."))
@@ -291,7 +299,6 @@ export default {
           eventDescription,
           uid,
           imageUrl,
-          createdOn,
           viewed: 0,
           active: true,
           key,
@@ -312,7 +319,7 @@ export default {
         commit("buttonLoading", false, { root: true })
       }
     },
-    async closeEvent({ commit }, payload) {
+    closeEvent: async ({ commit }, payload) => {
       try {
         commit("setAlertMessage", {
           showAlert: false,
