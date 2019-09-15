@@ -169,22 +169,22 @@ export default {
     }
   },
   actions: {
-    getRequests: firebaseAction(({ bindFirebaseRef }) => {
+    getRequests: firebaseAction(async ({ bindFirebaseRef }) => {
       const { uid } = auth().currentUser
-      return bindFirebaseRef('requests', database()
+      return await bindFirebaseRef('requests', database()
         .ref("requests")
         .orderByChild("uid")
         .equalTo(uid))
     }),
-    getEvents: firebaseAction(({ bindFirebaseRef }) => {
+    getEvents: firebaseAction(async ({ bindFirebaseRef }) => {
       const { uid } = auth().currentUser
-      return bindFirebaseRef('events', database()
+      return await bindFirebaseRef('events', database()
         .ref("events")
         .orderByChild("uid")
         .equalTo(uid))
     }),
-    getDonorDetails: firebaseAction(({ bindFirebaseRef }) => {
-      return bindFirebaseRef('donationDetails', database()
+    getDonorDetails: firebaseAction(async ({ bindFirebaseRef }) => {
+      return await bindFirebaseRef('donationDetails', database()
         .ref("donationDetails"))
     }),
     getDonorProfile: async ({ commit }, payload) => {
