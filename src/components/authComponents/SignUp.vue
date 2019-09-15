@@ -30,7 +30,7 @@
         <v-text-field :rules="rules" outlined v-model="signUpData.phone" label="Phone"></v-text-field>
       </v-form>
     </v-card>
-    <div class="d-flex justify-space-between py-5">
+    <div class="d-flex justify-space-between py-2">
       <v-btn @click="goBack" rounded color="primary">Back</v-btn>
       <v-btn @click="signup" :loading="buttonLoading" rounded color="primary">Sign Up</v-btn>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <DonorDetailDialog />
-    <div class="d-flex flex-row">
+    <div class="d-flex flex-row mt-4">
       <div>
         <v-card>
           <v-card-title>

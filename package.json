@@ -9,11 +9,13 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "exports-loader": "^0.7.0",
     "firebase": "^6.6.0",
     "geofire": "^5.0.1",
     "leaflet": "^1.5.1",
     "leaflet-geosearch": "^2.7.0",
     "moment": "^2.24.0",
+    "prunecluster": "^2.1.0",
     "qrcode.vue": "^1.6.2",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",

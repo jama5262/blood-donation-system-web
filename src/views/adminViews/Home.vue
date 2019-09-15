@@ -1,6 +1,7 @@
 <template>
   <div class="home-container">
     <HospitalDialog />
+    <HospitalMapDialog />
     <Appbar />
     <VerticalTab />
   </div>
@@ -10,12 +11,14 @@
 import Appbar from "../../components/adminComponents/appbar/Appbar"
 import VerticalTab from "../../components/adminComponents/tabs/VerticalTab";
 import HospitalDialog from "./hospitalViews/Hospital";
+import HospitalMapDialog from "../../components/adminComponents/dialogs/HospitalsMapDialog";
 
 export default {
   components: {
     Appbar,
     VerticalTab,
-    HospitalDialog
+    HospitalDialog,
+    HospitalMapDialog
   }
 };
 </script>

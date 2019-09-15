@@ -2,8 +2,8 @@
   <v-app-bar color="primary" dark>
     <v-toolbar-title>{{ adminName }}</v-toolbar-title>
     <div class="flex-grow-1"></div>
-    <v-btn icon>
-      <v-icon>mdi-qrcode</v-icon>
+    <v-btn @click="showAllHospitalMap" icon>
+      <v-icon>mdi-map </v-icon>
     </v-btn>
     <v-menu left bottom>
       <template v-slot:activator="{ on }">
@@ -33,8 +33,8 @@ export default {
     };
   },
   methods: {
-    showQRCode() {
-      // this.$store.commit("hospitalModule/showqrCodeDialog", true);
+    showAllHospitalMap() {
+      this.$store.commit("adminModule/showHospitalMapDialog", true);
     },
     menuMethod(value) {
       if (value === 1) {

@@ -1,6 +1,8 @@
 import { database } from "firebase";
 import { firebaseAction } from 'vuexfire';
 import moment from "moment";
+import L from 'leaflet';
+import { PruneCluster, PruneClusterForLeaflet } from 'exports-loader?PruneCluster,PruneClusterForLeaflet!prunecluster/dist/PruneCluster.js'
 
 export default {
   namespaced: true,
@@ -23,10 +25,14 @@ export default {
       donorDetailsDialog: {
         showDialog: false,
         donorProfile: {}
+      },
+      hospitalMapDialog: {
+        showDialog: false,
       }
     },
     donorProfileMap: null,
     hospitalMap: null,
+    allHospitalMap: null,
     leafletTile: {
       url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -78,8 +84,52 @@ export default {
       L.marker([parseFloat(payload.lat), parseFloat(payload.lng)], { icon: icon })
         .addTo(state.hospitalMap)
     },
+    initalizeAllHospitalMap: (state) => {
+      if (state.allHospitalMap) return
+      state.allHospitalMap = L.map("allHospitalMap").setView([0.5493079911125155, 38.177490234375], 7);
+      L.tileLayer(
+        state.leafletTile.url,
+        {
+          attribution: state.leafletTile.attribution,
+          maxZoom: state.leafletTile.maxZoom,
+        }
+      ).addTo(state.allHospitalMap);
+      let pruneCluster = new PruneClusterForLeaflet();
+      const icon = L.icon({
+        iconUrl: require('../../assets/marker.png'),
+        iconSize: [40, 40],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -90]
+      })
+      pruneCluster.BuildLeafletClusterIcon = function (cluster) {
+        return new L.DivIcon({
+          iconAnchor: [22, 94],
+          html: `<div style="
+          width: 50px;
+          height: 50px;
+          border-radius: 100%;
+          color: #fff;
+          font-size: 17px;
+          line-height: 50px;
+          text-align: center;
+          background: #D32F2F">
+            ${ cluster.population }
+          </div>`
+        });
+      };
+      for (var i = 0; i < state.allHospitals.length; i++) {
+        let marker = new PruneCluster.Marker(state.allHospitals[i].lat, state.allHospitals[i].lng);
+        marker.data.icon = icon
+        marker.data.popup = state.allHospitals[i].hname;
+        pruneCluster.RegisterMarker(marker);
+      }
+      state.allHospitalMap.addLayer(pruneCluster);
+    },
     showDonorDetailDialog: (state, showDialog) => {
       state.dialogs.donorDetailsDialog.showDialog = showDialog
+    },
+    showHospitalMapDialog: (state, showDialog) => {
+      state.dialogs.hospitalMapDialog.showDialog = showDialog
     },
     showHospitalDialog: (state, showDialog) => {
       state.dialogs.hospitalDialog.showDialog = showDialog
@@ -116,8 +166,8 @@ export default {
         console.log(error);
       }
     },
-    getDonorDetails: firebaseAction(async ({ bindFirebaseRef }) => {
-      return await bindFirebaseRef('donationDetails', database()
+    getDonorDetails: firebaseAction(({ bindFirebaseRef }) => {
+      return bindFirebaseRef('donationDetails', database()
         .ref("donationDetails"))
     }),
     getHospitalProfile: async ({ commit, dispatch }, payload) => {
@@ -131,8 +181,8 @@ export default {
       commit("initalizeHospitalMap")
       commit("changeHospitalLocation", { lat, lng })
     },
-    getAllHospitals: firebaseAction(async ({ bindFirebaseRef }) => {
-      return await bindFirebaseRef('allHospitals', database()
+    getAllHospitals: firebaseAction(({ bindFirebaseRef }) => {
+      return bindFirebaseRef('allHospitals', database()
         .ref("users")
         .orderByChild("role")
         .equalTo(1))
@@ -143,8 +193,8 @@ export default {
         .orderByChild("uid")
         .equalTo(state.dialogs.hospitalDialog.hospitalProfile.uid))
     }),
-    getEvents: firebaseAction(async ({ state, bindFirebaseRef }) => {
-      return await bindFirebaseRef('hospitalEvents', database()
+    getEvents: firebaseAction(({ state, bindFirebaseRef }) => {
+      return bindFirebaseRef('hospitalEvents', database()
         .ref("events")
         .orderByChild("uid")
         .equalTo(state.dialogs.hospitalDialog.hospitalProfile.uid))
