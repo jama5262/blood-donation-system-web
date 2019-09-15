@@ -6,14 +6,17 @@
       Hospitals
     </v-tab-item>
     <v-tab-item>
-      Donors
+      <Donors />
     </v-tab-item>
   </v-tabs>
 </template>
 
 <script>
-
+import Donors from "../../../views/adminViews/donorViews/Donors"
 export default {
+  components: {
+    Donors
+  }
 };
 </script>
 

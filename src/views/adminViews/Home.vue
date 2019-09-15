@@ -8,6 +8,7 @@
 <script>
 import Appbar from "../../components/adminComponents/appbar/Appbar"
 import VerticalTab from "../../components/adminComponents/tabs/VerticalTab";
+
 export default {
   components: {
     Appbar,
