@@ -226,6 +226,7 @@ export default new Vuex.Store({
         await database().ref(`users/${uid}`).set(
           {
             email,
+            uid,
             role: 1,
             phone,
             hname,

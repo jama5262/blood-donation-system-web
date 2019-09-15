@@ -1,10 +1,13 @@
 import { auth, database, storage } from "firebase";
 import { firebaseAction } from 'vuexfire';
+import router from "../../routes"
 
 export default {
   namespaced: true,
   state: {
     donationDetails: [],
+    allHospitals: [],
+    hospitalProfile: {},
     alert: {
       message: "",
       type: "success",
@@ -56,6 +59,9 @@ export default {
     setDonorProfile: (state, payload) => {
       state.dialogs.donorDetailsDialog.donorProfile = { ...payload }
     },
+    setHospitalProfile: (state, payload) => {
+      state.hospitalProfile = { ...payload }
+    },
   },
   actions: {
     getDonorProfile: async ({ commit }, payload) => {
@@ -73,6 +79,18 @@ export default {
     getDonorDetails: firebaseAction(({ bindFirebaseRef }) => {
       return bindFirebaseRef('donationDetails', database()
         .ref("donationDetails"))
+    }),
+    getHospitalProfile: async ({ commit }, payload) => {
+      commit("setHospitalProfile", {
+        ...payload,
+      });
+      // router to it
+    },
+    getAllHospitals: firebaseAction(({ bindFirebaseRef }) => {
+      return bindFirebaseRef('allHospitals', database()
+        .ref("users")
+        .orderByChild("role")
+        .equalTo(1))
     }),
   }
 }

@@ -3,7 +3,7 @@
     <v-tab>Hospitals</v-tab>
     <v-tab>Donors</v-tab>
     <v-tab-item>
-      Hospitals
+      <Hospitals />
     </v-tab-item>
     <v-tab-item>
       <Donors />
@@ -12,9 +12,11 @@
 </template>
 
 <script>
+import Hospitals from "../../../views/adminViews/hospitalViews/Hospitals"
 import Donors from "../../../views/adminViews/donorViews/Donors"
 export default {
   components: {
+    Hospitals,
     Donors
   }
 };
