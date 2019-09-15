@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import DonorDetailDialog from "../../../components/hospitalComponents/dialogs/DonorDetailsDialog";
+import DonorDetailDialog from "../../../components/adminComponents/dialogs/DonorDetailsDialog";
 export default {
   data() {
     return {
@@ -62,16 +62,16 @@ export default {
   },
   methods: {
     viewProfile(value) {
-      this.$store.dispatch("hospitalModule/getDonorProfile", value);
+      this.$store.dispatch("adminModule/getDonorProfile", value);
     }
   },
   computed: {
     donorDetails() {
-      return this.$store.state.hospitalModule.donationDetails;
+      return this.$store.state.adminModule.donationDetails;
     }
   },
   mounted() {
-    this.$store.dispatch("hospitalModule/getDonorDetails");
+    this.$store.dispatch("adminModule/getDonorDetails");
   },
   components: {
     DonorDetailDialog

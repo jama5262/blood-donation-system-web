@@ -4,7 +4,8 @@ import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { vuexfireMutations } from 'vuexfire';
-import HospitalModule from "./modules/hospitalModule";
+import hospitalModule from "./modules/hospitalModule";
+import adminModule from "./modules/adminModule";
 import router from "../routes"
 import { async } from "q";
 
@@ -12,7 +13,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    hospitalModule: HospitalModule
+    hospitalModule,
+    adminModule
   },
   state: {
     userDetails: {},
@@ -224,6 +226,7 @@ export default new Vuex.Store({
         await database().ref(`users/${uid}`).set(
           {
             email,
+            uid,
             role: 1,
             phone,
             hname,

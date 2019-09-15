@@ -9,7 +9,7 @@
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify "
-              label="Search by name, national ID and bloodtype"
+              label="Search by hospital name and location"
               single-line
               outlined
               hide-details
@@ -18,18 +18,16 @@
           <v-data-table
             :search="search"
             :headers="headers"
-            :items="donorDetails"
+            :items="allHospitals"
             :items-per-page="10"
           >
             <template v-slot:body="{ items }">
               <tbody>
-                <tr v-for="item in items" :key="item.fullName">
-                  <td>{{ item.fullName }}</td>
-                  <td>{{ item.nationalId }}</td>
-                  <td>{{ item.bloodType }}</td>
-                  <td>{{ item.noOfDonations }}</td>
-                  <td>{{ item.lastDonated }}</td>
+                <tr v-for="item in items" :key="item.email">
                   <td>{{ item.hname }}</td>
+                  <td>{{ item.place }}</td>
+                  <td>{{ item.phone }}</td>
+                  <td>{{ item.email }}</td>
                   <td>
                     <v-btn @click="viewProfile(item)" x-small text color="primary">View More</v-btn>
                   </td>
@@ -44,34 +42,32 @@
 </template>
 
 <script>
-import DonorDetailDialog from "../../../components/hospitalComponents/dialogs/DonorDetailsDialog";
+import DonorDetailDialog from "../../../components/adminComponents/dialogs/DonorDetailsDialog";
 export default {
   data() {
     return {
       search: "",
       headers: [
-        { text: "Name", align: "left", value: "fullName" },
-        { text: "National ID", value: "nationalId", align: "left" },
-        { text: "Blood Type", value: "bloodType", align: "left" },
-        { text: "No. of Donations", value: "noOfDonations", align: "left" },
-        { text: "Last Donated", value: "lastDonated", align: "left" },
-        { text: "Hospital Donated To", value: "hname" },
+        { text: "Name", align: "left", value: "hname" },
+        { text: "Location", value: "place", align: "left" },
+        { text: "Phone", value: "phone", align: "left" },
+        { text: "Email", value: "email", align: "left" },
         { text: "Action" }
       ]
     };
   },
   methods: {
     viewProfile(value) {
-      this.$store.dispatch("hospitalModule/getDonorProfile", value);
+      this.$store.dispatch("adminModule/getHospitalProfile", value);
     }
   },
   computed: {
-    donorDetails() {
-      return this.$store.state.hospitalModule.donationDetails;
+    allHospitals() {
+      return this.$store.state.adminModule.allHospitals;
     }
   },
   mounted() {
-    this.$store.dispatch("hospitalModule/getDonorDetails");
+    this.$store.dispatch("adminModule/getAllHospitals");
   },
   components: {
     DonorDetailDialog
