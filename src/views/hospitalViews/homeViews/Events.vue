@@ -13,7 +13,9 @@
       </v-tabs>
     </v-col>
     <v-col>
-      <div class="ma-4" id="eventMap"></div>
+      <div class="map-container">
+        <div class="ma-4" id="eventMap"></div>
+      </div>
     </v-col>
   </v-row>
 </template>
@@ -47,5 +49,9 @@ export default {
   z-index: 0;
   height: 500px;
   border-radius: 10px;
+}
+.map-container {
+  position: sticky;
+  top: 15px
 }
 </style>

@@ -1,15 +1,20 @@
 <template>
-  <div>
-    this is the admin
+  <div class="home-container">
+    <Appbar />
   </div>
 </template>
 
 <script>
-  export default {
-    
+import Appbar from "../../components/adminComponents/appbar/Appbar"
+export default {
+  components: {
+    Appbar
   }
+};
 </script>
 
 <style lang="scss" scoped>
-
+.home-container {
+  height: 100%;
+}
 </style>

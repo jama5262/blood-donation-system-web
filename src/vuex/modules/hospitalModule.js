@@ -193,7 +193,7 @@ export default {
           showAlert: false,
           message: "",
         })
-        const snapshot = await database().ref(`donors/${ payload.uid }`).once("value")
+        const snapshot = await database().ref(`users/${ payload.uid }`).once("value")
         commit("setDonorProfile", {
           ...payload,
           ...snapshot.val()
