@@ -18,7 +18,7 @@ This project aims to develop a web-based application for the hospital and a mobi
 - [Vuejs](https://firebase.google.com/), [Vuex](https://vuejs.org/), [Vuexfire](https://vuex.vuejs.org)
 - [Vuetify](https://vuetifyjs.com/en/)
 - [Leaflet](https://leafletjs.com/), [Leadlet-Geosearch](https://github.com/smeijer/leaflet-geosearch), [Prune Cluster](https://github.com/SINTEF-9012/PruneCluster)
-- [Vuetify](https://momentjs.com/)
+- [MomentJS](https://momentjs.com/)
 
 ## Installation
 Before installation, you must have installed [NodeJS](https://nodejs.org/en/) and later use it to install the [VueJS framework](https://cli.vuejs.org/guide/installation.html) for this project to works on your machine
