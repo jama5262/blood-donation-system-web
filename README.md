@@ -17,7 +17,7 @@ This project aims to develop a web-based application for the hospital and a mobi
 - [Firebase](https://firebase.google.com/), [Geofire](https://github.com/firebase/geofire-js)
 - [Vuejs](https://firebase.google.com/), [Vuex](https://vuejs.org/), [Vuexfire](https://vuex.vuejs.org)
 - [Vuetify](https://vuetifyjs.com/en/)
-- [Leaflet](https://leafletjs.com/), [Leadlet-Geosearch](https://github.com/smeijer/leaflet-geosearch), [Prune Cluster](https://github.com/SINTEF-9012/PruneCluster)
+- [Leaflet](https://leafletjs.com/), [Leaflet-Geosearch](https://github.com/smeijer/leaflet-geosearch), [Prune Cluster](https://github.com/SINTEF-9012/PruneCluster)
 - [MomentJS](https://momentjs.com/)
 
 ## Installation
