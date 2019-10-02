@@ -1,8 +1,10 @@
 # Blood Donation System Web
 
-This project aims to develop a web-based application for the hospital and a mobile base application for donors that will reduce the time taken to get a specific blood type e.g. A+ from registered donors within a geographical area in case of emergencies and in the process store data in a centralized database that is accessible to all hospitals.
+This project aims to develop a web-based application for the hospital and a [mobile base application](https://github.com/jama5262/blood-donation-system-android) for donors that will reduce the time taken to get a specific blood type e.g. A+ from registered donors within a geographical area in case of emergencies and in the process store data in a centralized database that is accessible to all hospitals.
 
 ### To view the app click [here](https://elite-span-131415.firebaseapp.com)
+
+#### The [mobile android application](https://github.com/jama5262/blood-donation-system-android) is available with is only accessible to donors
 
 # Table of Contents
 - [Built With](#built-with)
