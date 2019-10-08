@@ -22,6 +22,12 @@ This project aims to develop a web-based application for the hospital and a [mob
 - [Leaflet](https://leafletjs.com/), [Leaflet-Geosearch](https://github.com/smeijer/leaflet-geosearch), [Prune Cluster](https://github.com/SINTEF-9012/PruneCluster)
 - [MomentJS](https://momentjs.com/)
 
+## Demos
+
+Demo|
+------------ |
+<img src="https://github.com/jama5262/blood-donation-system-web/blob/develop/gif/image.gif" alt="alt text" height="500px"> | 
+
 ## Installation
 Before installation, you must have installed [NodeJS](https://nodejs.org/en/) and later use it to install the [VueJS framework](https://cli.vuejs.org/guide/installation.html) for this project to works on your machine
 
